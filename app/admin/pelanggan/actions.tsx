@@ -72,6 +72,8 @@ export default function Actions({ id }: { id: string }) {
     })
   }
 
+  console.log(id);
+  console.log(encrypt(id),"rtres")
   return (
     <>
       <DropdownMenu>

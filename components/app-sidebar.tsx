@@ -3,6 +3,7 @@
 import * as React from "react"
 import {
   AudioWaveform,
+  Book,
   BookOpen,
   Bot,
   Command,
@@ -26,12 +27,13 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar"
+import { NavLaporan } from "./nav-laporan"
 
 
 const data = {
   teams: [
     {
-      name: "Sipak-Asep",
+      name: "SRET-PAM",
       logo: GalleryVerticalEnd,
       plan: "",
     },
@@ -45,9 +47,33 @@ const data = {
       
     },
     {
+      title: "Calon Pel. PRetribusi",
+      url: "/admin/capel-ret",
+      icon: User,
+    },
+    {
+      title: "Pel. PRetribusi",
+      url: "/admin/pelanggan",
+      icon: User,
+    },
+    {
+      title: "Tarif",
+      url: "/admin/tarif",
+      icon: User,
+    },
+    {
       title: "Users",
       url: "/admin/users",
       icon: User,
+    },
+  ],
+  laporan: [
+    {
+      title: "Calon Pel. PRetribusi",
+      url: "/admin/cetakcalon-pungutan",
+      icon: Book,
+      isActive: true,
+      
     },
   ],
 }
@@ -60,6 +86,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
+        <NavLaporan items={data.laporan} />
         {/* <NavProjects projects={data.projects} /> */}
       </SidebarContent>
       <SidebarFooter>

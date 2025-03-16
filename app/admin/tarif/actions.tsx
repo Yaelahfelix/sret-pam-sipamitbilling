@@ -23,7 +23,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
-import { deleteUser } from "@/lib/actions/usersAction"
+import { deleteData } from "@/lib/actions/actTarif"
 import { useToast } from "@/hooks/use-toast"
 import { encrypt } from "@/lib/crypto"
 
@@ -35,7 +35,7 @@ export default function Actions({ id }: { id: string }) {
 
   const deleteAction = (id: string) => {
     startTransition(async () => {
-      const data = await deleteUser(id)
+      const data = await deleteData(id)
 
       if (data.success) {
         toast({
@@ -53,7 +53,7 @@ export default function Actions({ id }: { id: string }) {
           ),
         })
 
-        router.refresh()
+        location.reload()
       } else {
         toast({
           variant: "destructive",
@@ -84,7 +84,7 @@ export default function Actions({ id }: { id: string }) {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
           <DropdownMenuItem asChild>
-            <Link href={`/admin/users/edit?id=${encodeURIComponent(encrypt(id))}`}>
+            <Link href={`/admin/tarif/edit?id=${encodeURIComponent(encrypt(id))}`}>
               <Pencil className="h-4 w-4 mr-2" /> Edit
             </Link>
           </DropdownMenuItem>

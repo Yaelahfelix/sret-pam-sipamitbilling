@@ -36,6 +36,6 @@ const optionDB :any = {
 
 const option  = optionDB[environment]
 const access: ConnectionOptions = option;
-const db = await mysql.createConnection(access);
+const db = mysql.createPool(access);
 
 export default db;

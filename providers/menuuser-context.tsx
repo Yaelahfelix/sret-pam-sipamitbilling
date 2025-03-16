@@ -57,6 +57,27 @@ const pageNames: { [key: string]: objMenu } = {
       {title : "Edit", url : "/admin/users/edit",ismenu : true,id :2}
     ]
   },
+  "/admin/tarif": {
+    title :  "Tarif",
+    icon : User,
+    items : [
+      {title : "Tarif", url : "/admin/tarif",ismenu : true ,id : 3}
+    ]
+  },
+  "/admin/tarif/create": {
+    title :  "Create Tarif",
+    items : [
+      {title : "Tarif", url : "/admin/tarif",ismenu : false,id : 1},
+      {title : "create", url : "/admin/tarif/create",ismenu : true,id :2}
+    ]
+  },
+  "/admin/tarif/edit": {
+    title :  "Edit Tarif",
+    items : [
+      {title : "Tarif", url : "/admin/tarif",ismenu : false,id : 1},
+      {title : "Edit", url : "/admin/tarif/edit",ismenu : true,id :2}
+    ]
+  },
 };
 export const MenuUserContext = createContext(pageNames)
 
