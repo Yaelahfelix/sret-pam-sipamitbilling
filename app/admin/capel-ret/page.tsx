@@ -24,15 +24,15 @@ import { Skeleton } from "@/components/ui/skeleton"
 // }
 const fetcher  = (url : any) => axios.get(url).then(res => res.data)
 
-export default function Tarif() {
+export default function CapelRet() {
 
-	const { data, error , isLoading } = useSWR('/api/tarif', fetcher)
+	const { data, error , isLoading } = useSWR('/api/capelret', fetcher)
 	if (error) return (
 		<main className="flex flex-col gap-5 justify-center content-center p-5">
 			<Card className="w-full">
 				<CardHeader>
-					<CardTitle>Tarif</CardTitle>
-					<CardDescription>Tarif Retribusi</CardDescription>
+					<CardTitle>Capel Retribusi</CardTitle>
+					<CardDescription>Calon Pelanggan Pungutan Retribusi</CardDescription>
 				</CardHeader>
 				<CardContent>
 					<Alert variant="destructive" className="mb-5">
