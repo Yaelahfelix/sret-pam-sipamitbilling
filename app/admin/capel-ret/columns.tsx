@@ -26,6 +26,7 @@ export type CapelRet = {
   koderet : string,
 	nama: string,
   alamat: string,
+  nohp : string,
   kelurahan: String
 }
 
@@ -59,6 +60,12 @@ export const columns: ColumnDef<CapelRet>[] = [
     accessorKey: "alamat",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Alamat" />
+    ),
+  },
+  {
+    accessorKey: "nohp",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="No HP" />
     ),
   },
   {

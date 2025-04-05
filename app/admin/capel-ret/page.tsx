@@ -78,11 +78,11 @@ export default function CapelRet() {
       <main className="flex flex-col gap-5 justify-center content-center p-5">
         <Card className="w-full">
           <CardHeader className="py-4">
-						<Link href="/admin/tarif/create" className="flex justify-end">
+						{/* <Link href="/admin/tarif/create" className="flex justify-end">
 								<Button variant="default" className="w-32">
 									<Plus className="w-4 h-4 mr-1" /> Create
 								</Button>
-							</Link>
+							</Link> */}
           </CardHeader>
           <CardContent>
 	
