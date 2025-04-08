@@ -18,6 +18,7 @@ import { DataTable } from "./data-table"
 import useSWR, { Fetcher } from 'swr' 
 import axios from 'axios'
 import { Skeleton } from "@/components/ui/skeleton"
+import { useState } from "react"
 
 // export const metadata: Metadata = {
 //   title: "Users",
@@ -25,8 +26,8 @@ import { Skeleton } from "@/components/ui/skeleton"
 const fetcher  = (url : any) => axios.get(url).then(res => res.data)
 
 export default function CapelRet() {
-
 	const { data, error , isLoading } = useSWR('/api/capelret', fetcher)
+
 	if (error) return (
 		<main className="flex flex-col gap-5 justify-center content-center p-5">
 			<Card className="w-full">

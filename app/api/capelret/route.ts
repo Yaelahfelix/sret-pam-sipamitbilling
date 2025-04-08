@@ -18,7 +18,6 @@ export async function GET(request : Request) {
 		}
 		
 		const [data] = await db.query<RowDataPacket[]>('select a.*,b.kode as koderet from capel_ret a left join tarif_ret b on a.tarif_id=b.id where ISNULL(a.tarif_id) order by a.nama asc',[]);
-		
 		// // await db.end();
 		// console.log(data);
 		return NextResponse.json( {

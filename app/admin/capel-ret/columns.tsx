@@ -3,22 +3,8 @@
 import { ColumnDef } from "@tanstack/react-table"
 import { DataTableColumnHeader } from "@/components/datatable-header-column"
 import Actions from "./actions"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+
 import * as React from "react";
-import { Button } from "@/components/ui/button";
-import { Ellipsis } from "lucide-react";
 // define data
 export type CapelRet = {
   id: string,
@@ -78,7 +64,7 @@ export const columns: ColumnDef<CapelRet>[] = [
     id: "actions",
     cell: function Cell({ row }) {
       return (
-        <Actions id={row.original.id} />
+        <Actions id={row.original.id} no_pelanggan={row.original.nosamb} nama={row.original.nama} />
       );
     },
     size: 40,

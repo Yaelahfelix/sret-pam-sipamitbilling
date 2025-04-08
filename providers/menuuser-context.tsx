@@ -99,6 +99,27 @@ const pageNames: { [key: string]: objMenu } = {
   //     {title : "Edit", url : "/admin/tarif/edit",ismenu : true,id :2}
   //   ]
   // },
+  "/admin/pelanggan": {
+    title :  "Pelanggan Retribusi",
+    icon : User,
+    items : [
+      {title : "Pelanggan Retribusi", url : "/admin/pelanggan",ismenu : true ,id : 3}
+    ]
+  },
+  // "/admin/pelanggan/create": {
+  //   title :  "Create Capel Retribusi",
+  //   items : [
+  //     {title : "Capel. Retribusi", url : "/admin/capel-ret",ismenu : false,id : 1},
+  //     {title : "Create Capel Retribusi", url : "/admin/capel-ret/create",ismenu : true,id :2}
+  //   ]
+  // },
+  "/admin/pelanggan/edit": {
+    title :  "Edit Pelanggan Retribusi",
+    items : [
+      {title : "Tarif", url : "/admin/pelanggan",ismenu : false,id : 1},
+      {title : "Edit", url : "/admin/pelanggan/edit",ismenu : true,id :2}
+    ]
+  },
 
 };
 export const MenuUserContext = createContext(pageNames)

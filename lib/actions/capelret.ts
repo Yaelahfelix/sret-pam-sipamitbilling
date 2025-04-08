@@ -62,6 +62,18 @@ export const editData = async (id: number, formData: FormData) => {
   }
 }
 
+export const verifikasiData = async (id: string, idNumber: string) => {
+  try {
+    const cookieStore = await cookies();
+    const response = await axios.put(`${backendUrl}/api/capelret/${id}`, {idNumber}, {
+      headers : { Cookie: cookieStore.toString() }
+    })
+    return response.data
+  } catch (error) {
+    return axiosErrorHandler(error)
+  }
+}
+
 export const deleteData = async (id: string) => {
   try {
     const cookieStore = await cookies()

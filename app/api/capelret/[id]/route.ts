@@ -19,35 +19,36 @@ export async function PUT(request : NextRequest,{ params }: { params:  Promise<{
 		const param =  await params
 		const id =  param.id	
 
-		const formData = await request.formData();
-		
-		const {kode,nama,tarif} = {
-			kode : formData.get("kode") as string,
-			nama : formData.get("nama") as string,		
-			tarif : formData.get("tarif") as string
-		};
+		const body = await request.json();
 
-		const [dataCheck] = await  db.query<RowDataPacket[]>('select * from tarif_ret where id=?',[id]);
+		const [dataCheck] = await  db.query<RowDataPacket[]>('select * from tarif_ret where id=?',[body.idNumber]);
 		if (dataCheck.length === 0 ) {
 			return NextResponse.json({
 				success : false,
-				message : "dataNotexist"
+				message : "dataNotexist Tarif"
 			},{status: 422})	
 		}
 
+		const [dataCheck2] = await  db.query<RowDataPacket[]>('select * from capel_ret where id=?',[id]);
+		if (dataCheck2.length === 0 ) {
+			return NextResponse.json({
+				success : false,
+				message : "dataNotexist Calon Pelanggan"
+			},{status: 422})	
+		}
 
-		const [rows] = await db.execute<RowDataPacket[]>('UPDATE tarif_ret set kode=?,nama=?,tarif=? where id=?',[kode,nama,parseInt(tarif) || 0,id]);
+		const [rows] = await db.execute<RowDataPacket[]>('UPDATE capel_ret set tarif_id=?  where id=?',[body.idNumber,id]);
 
-		// const result : any = rows;
-		// if (result.affectedRows === 0) {
-		// 	return NextResponse.json({
-		// 		success : false,
-		// 		message : "No Record Affected"
-		// 	},
-		// 	{
-		// 		status: 422
-		// 	})				
-		// }
+		const result : any = rows;
+		if (result.affectedRows === 0) {
+			return NextResponse.json({
+				success : false,
+				message : "No Record Affected"
+			},
+			{
+				status: 422
+			})				
+		}
 
 
 		return NextResponse.json({
@@ -57,7 +58,11 @@ export async function PUT(request : NextRequest,{ params }: { params:  Promise<{
 		}, {status: 200});
 	} catch (error) {
 		console.log(error);
-		return NextResponse.json(error)
+		
+		return NextResponse.json({
+			success : false,
+			message : error
+		},{status: 500})
 	}
 }
 
