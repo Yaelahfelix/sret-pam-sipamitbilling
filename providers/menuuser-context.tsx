@@ -11,6 +11,7 @@ import { type LucideIcon, SquareTerminal,
   PieChart,
   Settings2,
   User,
+  Book,
 
 } from "lucide-react";
 import React, {createContext,useContext} from "react";
@@ -118,6 +119,13 @@ const pageNames: { [key: string]: objMenu } = {
     items : [
       {title : "Tarif", url : "/admin/pelanggan",ismenu : false,id : 1},
       {title : "Edit", url : "/admin/pelanggan/edit",ismenu : true,id :2}
+    ]
+  },
+  "/admin/cetakcalon-pungutan": {
+    title :  "Daftar Calon Retribusi",
+    icon : BookOpen,
+    items : [
+      {title : "Pelanggan Retribusi", url : "/admin/cetakcalon-pungutan",ismenu : true ,id : 3}
     ]
   },
 

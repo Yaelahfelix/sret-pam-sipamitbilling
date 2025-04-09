@@ -13,27 +13,27 @@ import {
 } from "@/components/ui/card"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
-import { getUsers } from "@/lib/actions/usersAction"
 import { columns } from "./columns"
 import { DataTable } from "./data-table"
 import useSWR, { Fetcher } from 'swr' 
 import axios from 'axios'
 import { Skeleton } from "@/components/ui/skeleton"
+import { useState } from "react"
 
 // export const metadata: Metadata = {
 //   title: "Users",
 // }
 const fetcher  = (url : any) => axios.get(url).then(res => res.data)
 
-export default function Users() {
+export default function CapelRet() {
+	const { data, error , isLoading } = useSWR('/api/pelanggan', fetcher)
 
-	const { data, error , isLoading } = useSWR('/api/users', fetcher)
 	if (error) return (
 		<main className="flex flex-col gap-5 justify-center content-center p-5">
 			<Card className="w-full">
 				<CardHeader>
-					<CardTitle>Users</CardTitle>
-					<CardDescription>Users Management</CardDescription>
+					<CardTitle>Capel Retribusi</CardTitle>
+					<CardDescription>Calon Pelanggan Pungutan Retribusi</CardDescription>
 				</CardHeader>
 				<CardContent>
 					<Alert variant="destructive" className="mb-5">
@@ -79,11 +79,11 @@ export default function Users() {
       <main className="flex flex-col gap-5 justify-center content-center p-5">
         <Card className="w-full">
           <CardHeader className="py-4">
-						<Link href="/admin/users/create" className="flex justify-end">
+						{/* <Link href="/admin/tarif/create" className="flex justify-end">
 								<Button variant="default" className="w-32">
 									<Plus className="w-4 h-4 mr-1" /> Create
 								</Button>
-							</Link>
+							</Link> */}
           </CardHeader>
           <CardContent>
 	

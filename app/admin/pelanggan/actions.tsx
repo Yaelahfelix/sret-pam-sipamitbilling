@@ -2,8 +2,8 @@
 
 import { useRouter } from "next/navigation"
 import Link from "next/link"
-import { useTransition, useState } from "react"
-import { Check, CircleAlert, Pencil, Settings, Trash2 } from "lucide-react"
+import { useTransition, useState, useCallback } from "react"
+import { AlertCircle, Check, CheckCheck, CircleAlert, Pencil, Settings, Trash2 } from "lucide-react"
 // import { encrypt } from "@/lib/crypto"
 import {
   DropdownMenu,
@@ -23,19 +23,101 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
-import { deleteUser } from "@/lib/actions/usersAction"
+import { editData, verifikasiData } from "@/lib/actions/capelret"
 import { useToast } from "@/hooks/use-toast"
-import { encrypt } from "@/lib/crypto"
 
-export default function Actions({ id }: { id: string }) {
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import useSWR from "swr"
+import axios from "axios"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { Skeleton } from "@/components/ui/skeleton"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { Label } from "@/components/ui/label"
+import { Input } from "@/components/ui/input"
+
+const fetcher  = (url : any) => axios.get(url).then(res => res.data)
+
+export default function Actions({ id,no_pelanggan,nama }: { id: string,no_pelanggan : string,nama : string }) {
+  const { data, error , isLoading } = useSWR('/api/tarif', fetcher)
+  const [showVerifikasiDialog, setShowVerifikasiDialog] = useState(false);
+  const [valueVerifikasi, setValueVerifikasi] = useState("4");
   const router = useRouter()
   const { toast } = useToast()
   const [open, setOpen] = useState(false)
   const [isPending, startTransition] = useTransition()
 
+
+	if (error) return (
+		<main className="flex flex-col gap-5 justify-center content-center p-5">
+			<Card className="w-full">
+				<CardHeader>
+					<CardTitle>Tarif</CardTitle>
+					<CardDescription>Tarif Retribusi</CardDescription>
+				</CardHeader>
+				<CardContent>
+					<Alert variant="destructive" className="mb-5">
+							<AlertCircle className="h-4 w-4" />
+							<AlertTitle>Error Fetching Data</AlertTitle>
+							<AlertDescription>{error}</AlertDescription>
+						</Alert>
+				</CardContent>
+				<CardFooter></CardFooter>
+			</Card>
+		</main>
+	);
+	if (isLoading) return (
+
+		<main className="flex flex-col gap-5 justify-center content-center p-5">
+		<Card className="w-full">
+			<CardHeader>
+				{/* <CardTitle>Users</CardTitle>
+				<CardDescription>Users Management</CardDescription> */}
+			</CardHeader>
+			<CardContent>
+				{/* {!data.success && (
+					<Alert variant="destructive" className="mb-5">
+						<AlertCircle className="h-4 w-4" />
+						<AlertTitle>Error Fetching Data</AlertTitle>
+						<AlertDescription>{data.message}</AlertDescription>
+					</Alert>
+				)} */}
+				{/* <Link href="/users/create" className="flex justify-end">
+					<Button variant="default">
+						<Plus className="w-4 h-4 mr-1" /> Create
+					</Button>
+				</Link> */}
+				<Skeleton className="flex w-full m-1 h-[20px] rounded-full" />
+				<Skeleton className="flex w-full m-1 h-[20px] rounded-full" />
+				<Skeleton className="flex w-full m-1 h-[20px] rounded-full" />
+			</CardContent>
+			<CardFooter></CardFooter>
+		</Card>
+		</main>
+	)
+
   const deleteAction = (id: string) => {
     startTransition(async () => {
-      const data = await deleteUser(id)
+      const data = await verifikasiData(id,valueVerifikasi)
 
       if (data.success) {
         toast({
@@ -53,7 +135,7 @@ export default function Actions({ id }: { id: string }) {
           ),
         })
 
-        router.refresh()
+        location.reload()
       } else {
         toast({
           variant: "destructive",
@@ -71,9 +153,7 @@ export default function Actions({ id }: { id: string }) {
       }
     })
   }
-
-  console.log(id);
-  console.log(encrypt(id),"rtres")
+  console.log(isLoading);
   return (
     <>
       <DropdownMenu>
@@ -85,20 +165,81 @@ export default function Actions({ id }: { id: string }) {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          <DropdownMenuItem asChild>
-            <Link href={`/admin/users/edit?id=${encodeURIComponent(encrypt(id))}`}>
-              <Pencil className="h-4 w-4 mr-2" /> Edit
-            </Link>
-          </DropdownMenuItem>
+  
+
           <DropdownMenuItem
             className="focus:bg-destructive focus:text-white"
-            onClick={() => setOpen((prev) => !prev)}
+            onClick={() => setShowVerifikasiDialog((prev) => !prev)}
           >
-            <Trash2 className="h-4 w-4 mr-2" /> Delete
+
+            <CheckCheck className="h-4 w-4 mr-2" /> Verifikasi
           </DropdownMenuItem>
+ 
         </DropdownMenuContent>
       </DropdownMenu>
-      <AlertDialog open={open} onOpenChange={setOpen}>
+
+      <Dialog
+        open={showVerifikasiDialog }
+        onOpenChange={(open) => {
+          if (!open) {
+            setShowVerifikasiDialog(false);
+          }
+        }}
+      >
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>
+              Verifikasi Pelanggan Retribusi
+            </DialogTitle>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="grid grid-cols-3 items-center gap-4 w-full">
+              <Label htmlFor="pelanggan">Pelanggan</Label>
+              <Input
+                id="pelanggan"
+                value={`${no_pelanggan} - ${nama}`}
+                disabled={false}
+                readOnly={true}
+                className="col-span-2"
+              />
+
+        
+              <Label htmlFor="name" >Kode Retribusi</Label>
+              <Select onValueChange={setValueVerifikasi} defaultValue="4">
+                <SelectTrigger className="col-span-2 w-full">
+                  <SelectValue placeholder="Select A Kode Retrubusi" />
+                </SelectTrigger>
+                <SelectContent>
+                  {data.data.map((val : any) => (
+                    <SelectItem key={val.id} value={val.id.toString()}>{`${val.kode} - ${val.nama}`}</SelectItem>
+                  ))}
+
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          <DialogFooter>
+            
+            <Button
+              variant="secondary"
+              onClick={() => {
+                setShowVerifikasiDialog(false);
+              }}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={() => deleteAction(id)
+        
+              }
+              disabled={isPending}
+            >
+              Verifikasi
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+      {/* <AlertDialog open={open} onOpenChange={setOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Are you sure?</AlertDialogTitle>
@@ -118,7 +259,7 @@ export default function Actions({ id }: { id: string }) {
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
-      </AlertDialog>
+      </AlertDialog> */}
     </>
   )
 }

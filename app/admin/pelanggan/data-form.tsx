@@ -33,7 +33,7 @@ import { useToast } from "@/hooks/use-toast"
 import { cn } from "@/lib/utils"
 // import { getUserRoles } from "@/actions/userRolesAction"
 // import { getUserStatuses } from "@/actions/userStatusesAction"
-import { createUser, editUser } from "@/lib/actions/usersAction"
+import { createData, editData } from "@/lib/actions/actTarif"
 import { serialize } from "object-to-formdata"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select"
 
@@ -47,52 +47,31 @@ type userStatuses = {
   userStatusName: string
 }
 
-export default function UserForm({ user }: { user?: any }) {
+export default function TarifForm({ tarif }: { tarif?: any }) {
   const router = useRouter()
   const { toast } = useToast()
-  const [userRoles, setUserRoles] = useState<userRoles[]>([])
-  const [userStatuses, setUserStatuses] = useState<userStatuses[]>([])
-  const [openUserRoles, setOpenUserRoles] = useState(false)
-  const [openUserStatuses, setOpenUserStatuses] = useState(false)
-  const [showPassword, setShowPassword] = useState(false)
-  const [showPasswordConfirmation, setShowPasswordConfirmation] =
-    useState(false)
+
 
   const formSchema = z
     .object({
-			email: z.string().email().min(1, "Email is required"),
+			kode: z.string().min(1, "Kode is required"),
 			nama: z.string().min(1, "Name is required"),
-      password: user ? z.string().min(6).or(z.literal("")) : z.string().min(6),
-      passwordConfirmation: user
-        ? z.string().min(6).or(z.literal(""))
-        : z.string().min(6),
-
-			status : z.string().min(1, "status Reqruied"),
- 
-    })
-    .refine((data) => data.password === data.passwordConfirmation, {
-      message:
-        "The password field and passwordConfirmation field must be the same",
-      path: ["passwordConfirmation"],
+      tarif: z.coerce.number().min(1, "Tarif is required"),
     })
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: user
+    defaultValues: tarif
       ? {
-				  email: user.email ?? "",
-					nama: user.nama ?? "",
-          password: user.password ?? "",
-          passwordConfirmation: user.password ?? "",
-					status: user.status ?? "",
+				  kode: tarif.kode ?? "",
+					nama: tarif.nama ?? "",
+          tarif: tarif.tarif ?? "",
 
         }
       : {
-				  email: "",
+				  kode: "",
           nama: "",
-          password: "",
-          passwordConfirmation: "",
-					status: "1",
+          tarif: 0
         },
   })
 
@@ -100,9 +79,9 @@ export default function UserForm({ user }: { user?: any }) {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     startTransition(async () => {
       const formData = serialize(values)
-      const data = user
-        ? await editUser(user.id, formData)
-        : await createUser(formData)
+      const data = tarif
+        ? await editData(tarif.id, formData)
+        : await createData(formData)
 
       if (data.success) {
         toast({
@@ -120,7 +99,7 @@ export default function UserForm({ user }: { user?: any }) {
           ),
         })
 
-        router.push("/admin/users")
+        router.push("/admin/tarif")
         router.refresh()
       } else {
         toast({
@@ -150,12 +129,12 @@ export default function UserForm({ user }: { user?: any }) {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
 				<FormField
           control={form.control}
-          name="email"
+          name="kode"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email</FormLabel>
+              <FormLabel>Kode</FormLabel>
               <FormControl>
-                <Input type="email" placeholder="Email" {...field} />
+                <Input type="text" placeholder="kode" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -166,7 +145,7 @@ export default function UserForm({ user }: { user?: any }) {
           name="nama"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Name</FormLabel>
+              <FormLabel>Nama</FormLabel>
               <FormControl>
                 <Input type="text" placeholder="Nama" {...field} />
               </FormControl>
@@ -174,106 +153,20 @@ export default function UserForm({ user }: { user?: any }) {
             </FormItem>
           )}
         />
-
-				<FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Password</FormLabel>
-              <FormControl>
-                <div className="relative">
-                  {showPassword ? (
-                    <Eye
-                      className="absolute right-2.5 top-2.5 h-5 w-5"
-                      onClick={() => setShowPassword((prev) => !prev)}
-                    />
-                  ) : (
-                    <EyeOff
-                      className="absolute right-2.5 top-2.5 h-5 w-5"
-                      onClick={() => setShowPassword((prev) => !prev)}
-                    />
-                  )}
-                  <Input
-                    type={showPassword ? "text" : "password"}
-                    placeholder="password"
-                    {...field}
-                  />
-                </div>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
         <FormField
           control={form.control}
-          name="passwordConfirmation"
+          name="tarif"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Password Confirmation</FormLabel>
+              <FormLabel>Tarif</FormLabel>
               <FormControl>
-                <div className="relative">
-                  {showPasswordConfirmation ? (
-                    <Eye
-                      className="absolute right-2.5 top-2.5 h-5 w-5"
-                      onClick={() =>
-                        setShowPasswordConfirmation((prev) => !prev)
-                      }
-                    />
-                  ) : (
-                    <EyeOff
-                      className="absolute right-2.5 top-2.5 h-5 w-5"
-                      onClick={() =>
-                        setShowPasswordConfirmation((prev) => !prev)
-                      }
-                    />
-                  )}
-                  <Input
-                    type={showPasswordConfirmation ? "text" : "password"}
-                    placeholder="password"
-                    {...field}
-                  />
-                </div>
+                <Input type="number" placeholder="Tarif" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-
-			<FormField
-          control={form.control}
-          name="status"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Status</FormLabel>
-              <FormControl>
-                <div className="relative">
-                  {/* <Input
-                    type={showPasswordConfirmation ? "text" : "password"}
-                    placeholder="Password Confirmation"
-                    {...field}
-                  /> */}
-
-									<Select  onValueChange={field.onChange} defaultValue={field.value} >
-										<SelectTrigger className="w-[180px]">
-											<SelectValue placeholder="Select a Status" />
-										</SelectTrigger>
-										<SelectContent>
-											<SelectGroup>
-												<SelectLabel>Status</SelectLabel>
-												<SelectItem value="1">Aktif</SelectItem>
-												<SelectItem value="0">Nonaktif</SelectItem>
-											</SelectGroup>
-										</SelectContent>
-									</Select>
-                </div>
-
-
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+		
         <div className="flex justify-end">
           <Button type="submit" disabled={isPending}>
             Submit
