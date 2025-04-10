@@ -80,16 +80,16 @@ const pageNames: { [key: string]: objMenu } = {
     ]
   },
   "/admin/capel-ret": {
-    title :  "Capel. Retribusi",
+    title :  "Calon Pelanggan Retribusi",
     icon : User,
     items : [
-      {title : "Capel Retribusi", url : "/admin/capel-ret",ismenu : true ,id : 3}
+      {title : "Calon Pelanggan Retribusi", url : "/admin/capel-ret",ismenu : true ,id : 3}
     ]
   },
   "/admin/capel-ret/create": {
     title :  "Create Capel Retribusi",
     items : [
-      {title : "Capel. Retribusi", url : "/admin/capel-ret",ismenu : false,id : 1},
+      {title : "Calon Pelanggan Retribusi", url : "/admin/capel-ret",ismenu : false,id : 1},
       {title : "Create Capel Retribusi", url : "/admin/capel-ret/create",ismenu : true,id :2}
     ]
   },
@@ -125,10 +125,16 @@ const pageNames: { [key: string]: objMenu } = {
     title :  "Daftar Calon Retribusi",
     icon : BookOpen,
     items : [
-      {title : "Pelanggan Retribusi", url : "/admin/cetakcalon-pungutan",ismenu : true ,id : 3}
+      {title : "Pelanggan Retribusi", url : "/admin/cetakcalon-pungutan",ismenu : true ,id : 1}
     ]
   },
-
+  "/admin/lapretribusi": {
+    title :  "Laporan Penerimaan Retribusi",
+    icon : BookOpen,
+    items : [
+      {title : "Laporan Penerimaan Retribusi", url : "/admin/lapretribusi",ismenu : true ,id : 1}
+    ]
+  },
 };
 export const MenuUserContext = createContext(pageNames)
 

@@ -75,6 +75,13 @@ const data = {
       isActive: true,
       
     },
+    {
+      title: "Penerimaan Retribusi",
+      url: "/admin/lapretribusi",
+      icon: BookOpen,
+      isActive: true,
+      
+    },
   ],
 }
 
