@@ -35,7 +35,7 @@ import axios from 'axios'
 import { Skeleton } from "@/components/ui/skeleton"
 import type { SessionValidationResult } from '@/lib/session'
 import { LogoutButton } from './logout-button'
-const fetcher  = (url : any) => axios.get<SessionValidationResult>(url).then(res => res.data)
+const fetcher  = (url : any) => axios.get(url).then(res => res.data)
 
 export function NavUser(
 	
