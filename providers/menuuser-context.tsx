@@ -11,6 +11,7 @@ import { type LucideIcon, SquareTerminal,
   PieChart,
   Settings2,
   User,
+  Book,
 
 } from "lucide-react";
 import React, {createContext,useContext} from "react";
@@ -55,6 +56,83 @@ const pageNames: { [key: string]: objMenu } = {
     items : [
       {title : "Users", url : "/admin/users",ismenu : false,id : 1},
       {title : "Edit", url : "/admin/users/edit",ismenu : true,id :2}
+    ]
+  },
+  "/admin/tarif": {
+    title :  "Tarif",
+    icon : User,
+    items : [
+      {title : "Tarif", url : "/admin/tarif",ismenu : true ,id : 3}
+    ]
+  },
+  "/admin/tarif/create": {
+    title :  "Create Tarif",
+    items : [
+      {title : "Tarif", url : "/admin/tarif",ismenu : false,id : 1},
+      {title : "create", url : "/admin/tarif/create",ismenu : true,id :2}
+    ]
+  },
+  "/admin/tarif/edit": {
+    title :  "Edit Tarif",
+    items : [
+      {title : "Tarif", url : "/admin/tarif",ismenu : false,id : 1},
+      {title : "Edit", url : "/admin/tarif/edit",ismenu : true,id :2}
+    ]
+  },
+  "/admin/capel-ret": {
+    title :  "Calon Pelanggan Retribusi",
+    icon : User,
+    items : [
+      {title : "Calon Pelanggan Retribusi", url : "/admin/capel-ret",ismenu : true ,id : 3}
+    ]
+  },
+  "/admin/capel-ret/create": {
+    title :  "Create Capel Retribusi",
+    items : [
+      {title : "Calon Pelanggan Retribusi", url : "/admin/capel-ret",ismenu : false,id : 1},
+      {title : "Create Capel Retribusi", url : "/admin/capel-ret/create",ismenu : true,id :2}
+    ]
+  },
+  // "/admin/tarif/edit": {
+  //   title :  "Edit Tarif",
+  //   items : [
+  //     {title : "Tarif", url : "/admin/tarif",ismenu : false,id : 1},
+  //     {title : "Edit", url : "/admin/tarif/edit",ismenu : true,id :2}
+  //   ]
+  // },
+  "/admin/pelanggan": {
+    title :  "Pelanggan Retribusi",
+    icon : User,
+    items : [
+      {title : "Pelanggan Retribusi", url : "/admin/pelanggan",ismenu : true ,id : 3}
+    ]
+  },
+  // "/admin/pelanggan/create": {
+  //   title :  "Create Capel Retribusi",
+  //   items : [
+  //     {title : "Capel. Retribusi", url : "/admin/capel-ret",ismenu : false,id : 1},
+  //     {title : "Create Capel Retribusi", url : "/admin/capel-ret/create",ismenu : true,id :2}
+  //   ]
+  // },
+  "/admin/pelanggan/edit": {
+    title :  "Edit Pelanggan Retribusi",
+    items : [
+      {title : "Tarif", url : "/admin/pelanggan",ismenu : false,id : 1},
+      {title : "Edit", url : "/admin/pelanggan/edit",ismenu : true,id :2}
+    ]
+  },
+  "/admin/cetakcalon-pungutan": {
+    title :  "Daftar Calon Retribusi",
+    icon : BookOpen,
+    items : [
+      {title : "Pelanggan Retribusi", url : "/admin/cetakcalon-pungutan",ismenu : true ,id : 1}
+    ]
+  },
+  "/admin/lapretribusi": {
+    title :  "Laporan Penerimaan Retribusi",
+    icon : BookOpen,
+    items : [
+      {title : "Laporan Penerimaan Retribusi", url : "/admin/lapretribusi",ismenu : true ,id : 1}
     ]
   },
 };
