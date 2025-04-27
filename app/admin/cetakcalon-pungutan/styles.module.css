@@ -1,5 +1,6 @@
 .basereport {
-  margin: 10px 10px 10px 10px;
+  padding: 10px 10px 10px 10px;
+
   width: 210mm;
 }
 
@@ -10,11 +11,13 @@
 
 @page {
   size: A4 portrait;
-  margin: 7mm;
+  margin-top: 6mm;
+  margin-bottom: 6mm;
   /* padding: 5px; */
   @bottom-right  {
     content: "Page " counter(page) " of " counter(pages);
-    /* padding-bottom: 100mm; */
+    padding-bottom: 20px;
+    padding-right: 10px;
     /* padding: 40px; */
   }
 }

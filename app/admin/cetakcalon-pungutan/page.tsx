@@ -145,7 +145,7 @@ export default function Page() {
           <TableHeader>
             <TableRow  className="">
               <TableHead className="w-[10px] border border-black p-1 h-6 font-bold text-xs  text-black dark:text-gray-100 " >No.</TableHead>
-              <TableHead className="w-[80px] p-1  border border-black h-6 font-bold text-xs text-black dark:text-gray-100 " >No.Pel</TableHead>
+              <TableHead className="w-[60px] p-1  border border-black h-6 font-bold text-xs text-black dark:text-gray-100 " >No.Pel</TableHead>
               <TableHead className="w-[150px] p-1 border border-black h-6 font-bold text-xs text-black dark:text-gray-100 " >Nama</TableHead>
               <TableHead className="w-[180px] p-1 border border-black h-6 font-bold text-center  text-xs text-black dark:text-gray-100 " >Alamat</TableHead>
               <TableHead className='w-[80px] border border-black  p-1 h-6 font-bold text-center  text-xs text-black dark:text-gray-100 ' >Kelurahan</TableHead>
@@ -166,7 +166,7 @@ export default function Page() {
                   <Fragment key={`${ind}-${lap.nik}`}>
                     <TableRow >
                       <TableCell className={`w-[10px] border border-black p-1 text-xs text-center`} >{ind+1}</TableCell>
-                      <TableCell className={`w-[80px] p-1 border border-black text-xs text-left`} >{lap.nosamb}</TableCell>
+                      <TableCell className={`w-[60px] p-1 border border-black text-xs text-left`} >{lap.nosamb}</TableCell>
                       <TableCell className={`w-[150px] p-1 border border-black text-xs text-left`} >{lap.nama}</TableCell>
                       <TableCell className={`w-[180px] p-1 border border-black text-xs text-left`} >{lap.alamat}</TableCell>
                       <TableCell className={`w-[80px] p-1 border border-black text-xs text-left`} >{lap.kelurahan}</TableCell>

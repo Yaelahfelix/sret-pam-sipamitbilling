@@ -116,42 +116,44 @@ export default function Actions({ id,no_pelanggan,nama }: { id: string,no_pelang
 	)
 
   const deleteAction = (id: string) => {
-    startTransition(async () => {
-      const data = await verifikasiData(id,valueVerifikasi)
+    startTransition(() => {
+      (async () => {
+        const data = await verifikasiData(id, valueVerifikasi);
 
-      if (data.success) {
-        toast({
-          variant : "default",
-          description: (
-            <div className="flex gap-2 items-start">
-              <div className="flex flex-col justify-start ">
-                <Check className="w-10 h-10" />
+        if (data.success) {
+          toast({
+            variant: "default",
+            description: (
+              <div className="flex gap-2 items-start">
+                <div className="flex flex-col justify-start ">
+                  <Check className="w-10 h-10" />
+                </div>
+                <div>
+                  <p className="font-bold text-lg">Success</p>
+                  <p>{data.message}</p>
+                </div>
               </div>
-              <div>
-                <p className="font-bold text-lg">Success</p>
-                <p>{data.message}</p>
-              </div>
-            </div>
-          ),
-        })
+            ),
+          });
 
-        location.reload()
-      } else {
-        toast({
-          variant: "destructive",
-          description: (
-            <div className="flex gap-2 items-center">
-              <div className="flex flex-col justify-start ">
-                <CircleAlert className="w-8 h-8" />
+          location.reload();
+        } else {
+          toast({
+            variant: "destructive",
+            description: (
+              <div className="flex gap-2 items-center">
+                <div className="flex flex-col justify-start ">
+                  <CircleAlert className="w-8 h-8" />
+                </div>
+                <div>
+                  <p className="font-bold text-lg">{data.message}</p>
+                </div>
               </div>
-              <div>
-                <p className="font-bold text-lg">{data.message}</p>
-              </div>
-            </div>
-          ),
-        })
-      }
-    })
+            ),
+          });
+        }
+      })();
+    });
   }
   console.log(isLoading);
   return (
@@ -239,27 +241,6 @@ export default function Actions({ id,no_pelanggan,nama }: { id: string,no_pelang
           </DialogFooter>
         </DialogContent>
       </Dialog>
-      {/* <AlertDialog open={open} onOpenChange={setOpen}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-            <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete your
-              data.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction
-              onClick={() => deleteAction(id)}
-              disabled={isPending}
-            >
-              <Trash2 className="h-4 w-4 mr-2" />
-              Delete
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog> */}
     </>
   )
 }
