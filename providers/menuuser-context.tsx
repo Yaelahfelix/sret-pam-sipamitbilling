@@ -135,6 +135,13 @@ const pageNames: { [key: string]: objMenu } = {
       {title : "Laporan Penerimaan Retribusi", url : "/admin/lapretribusi",ismenu : true ,id : 1}
     ]
   },
+  "/admin/reset-password": {
+    title :  "reset password",
+    icon : BookOpen,
+    items : [
+      {title : "Reset Password", url : "/admin/reset-password",ismenu : true ,id : 1}
+    ]
+  },
 };
 export const MenuUserContext = createContext(pageNames)
 
