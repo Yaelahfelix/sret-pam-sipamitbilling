@@ -5,6 +5,7 @@ import { DataTableColumnHeader } from "@/components/datatable-header-column";
 
 import * as React from "react";
 import { formatNumber } from "@/lib/utils";
+import { formatRupiah } from "@/lib/formatRp";
 // define data
 export type DRD = {
   id: string;
@@ -19,6 +20,7 @@ export type DRD = {
   rekair: number;
   dendatunggakan: number;
   meterai: number;
+  retribusi: number;
 };
 
 export const columns: ColumnDef<DRD>[] = [
@@ -61,6 +63,7 @@ export const columns: ColumnDef<DRD>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Total" />
     ),
+    cell: ({ row }) => formatRupiah(row.original.retribusi),
   },
   {
     accessorKey: "kasir",

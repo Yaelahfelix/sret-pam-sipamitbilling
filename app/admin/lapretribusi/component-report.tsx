@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { DRD } from "./columns";
 import logo from "@/public/nlogo.svg";
 import { Rekapitulasi } from "./page";
+import { formatRupiah } from "@/lib/formatRp";
 
 // Props type definition
 type DRDTableProps = {
@@ -75,7 +76,7 @@ const ReportPrintComponent = React.forwardRef<HTMLDivElement, DRDTableProps>(
 
             <div className="my-4">
               <h1 className="text-lg text-center uppercase">
-                DAFTAR CALON PELANGGAN RETRIBUSI
+                Penerimaan Retribusi
               </h1>
               <h3 className="text-sm text-center">{periode}</h3>
             </div>
@@ -167,39 +168,6 @@ const ReportPrintComponent = React.forwardRef<HTMLDivElement, DRDTableProps>(
                         >
                           Kode Gol
                         </th>
-                        <th
-                          style={{
-                            border: "1px solid #000",
-                            padding: "5px",
-                            fontSize: "12px",
-                            width: "10%",
-                            textAlign: "right",
-                          }}
-                        >
-                          Rek Air
-                        </th>
-                        <th
-                          style={{
-                            border: "1px solid #000",
-                            padding: "5px",
-                            fontSize: "12px",
-                            width: "10%",
-                            textAlign: "right",
-                          }}
-                        >
-                          Meterai
-                        </th>
-                        <th
-                          style={{
-                            border: "1px solid #000",
-                            padding: "5px",
-                            fontSize: "12px",
-                            width: "10%",
-                            textAlign: "right",
-                          }}
-                        >
-                          Denda
-                        </th>
 
                         <th
                           style={{
@@ -263,36 +231,6 @@ const ReportPrintComponent = React.forwardRef<HTMLDivElement, DRDTableProps>(
                           >
                             {item.kodegol}
                           </td>
-                          <td
-                            style={{
-                              border: "1px solid #000",
-                              padding: "5px",
-                              fontSize: "12px",
-                              textAlign: "right",
-                            }}
-                          >
-                            {item.rekair}
-                          </td>
-                          <td
-                            style={{
-                              border: "1px solid #000",
-                              padding: "5px",
-                              fontSize: "12px",
-                              textAlign: "right",
-                            }}
-                          >
-                            {item.meterai}
-                          </td>
-                          <td
-                            style={{
-                              border: "1px solid #000",
-                              padding: "5px",
-                              fontSize: "12px",
-                              textAlign: "right",
-                            }}
-                          >
-                            {item.dendatunggakan}
-                          </td>
 
                           <td
                             style={{
@@ -302,14 +240,14 @@ const ReportPrintComponent = React.forwardRef<HTMLDivElement, DRDTableProps>(
                               textAlign: "right",
                             }}
                           >
-                            {item.total}
+                            {formatRupiah(item.retribusi)}
                           </td>
                         </tr>
                       ))}
                     </tbody>
                   </table>
 
-                  <div className="flex gap-5 mt-5">
+                  <div className="flex gap-5 mt-5 page-break">
                     <div className="w-6/12">
                       <h1>Rekapitulasi Kasir</h1>
                       <table
@@ -389,7 +327,7 @@ const ReportPrintComponent = React.forwardRef<HTMLDivElement, DRDTableProps>(
                                   textAlign: "right",
                                 }}
                               >
-                                {item.totalrp}
+                                {formatRupiah(parseInt(item.totalrp))}
                               </td>
                             </tr>
                           ))}
@@ -476,7 +414,7 @@ const ReportPrintComponent = React.forwardRef<HTMLDivElement, DRDTableProps>(
                                   textAlign: "right",
                                 }}
                               >
-                                {item.totalrp}
+                                {formatRupiah(parseInt(item.totalrp))}
                               </td>
                             </tr>
                           ))}
@@ -537,7 +475,12 @@ const PDFReport: React.FC<DRDTableProps> = (props) => {
         break-inside: avoid;
         page-break-inside: avoid;
       }
-            
+      
+       .page-break {
+    break-before: page; /* Modern browser */
+    page-break-before: always; /* Fallback for older browsers */
+  }
+
       .header, .header-space {
         height: 180px;
       }

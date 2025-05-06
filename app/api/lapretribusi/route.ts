@@ -30,7 +30,7 @@ export const GET = async (request: NextRequest) => {
     }
 
     const query = `
-      SELECT periode, nosamb, nama, alamat, kodegol, total, kasir, loketbayar, rekair, dendatunggakan, meterai
+      SELECT periode, nosamb, nama, alamat, kodegol, retribusi, kasir, loketbayar, rekair, dendatunggakan, meterai
       FROM drd 
       WHERE retribusi > 0 
         AND flaglunas = 1 
