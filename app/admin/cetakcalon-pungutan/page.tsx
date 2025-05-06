@@ -116,7 +116,7 @@ export default function Page() {
 
                     <SelectContent>
                       {dataKelurahan?.data.map((data: any) => (
-                        <SelectItem value={data.kelurahan}>
+                        <SelectItem value={data.kelurahan} key={data.kelurahan}>
                           {data.kelurahan}
                         </SelectItem>
                       ))}
@@ -136,7 +136,7 @@ export default function Page() {
 
                     <SelectContent>
                       {dataKodegol?.data.map((data: any) => (
-                        <SelectItem value={data.kodegol}>
+                        <SelectItem value={data.kodegol} key={data.kodegol}>
                           {data.kodegol}
                         </SelectItem>
                       ))}

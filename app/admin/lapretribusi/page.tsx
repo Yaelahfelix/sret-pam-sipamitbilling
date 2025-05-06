@@ -159,7 +159,9 @@ export default function Page() {
 
                     <SelectContent>
                       {dataKasir?.data.map((kasir) => (
-                        <SelectItem value={kasir.nama}>{kasir.nama}</SelectItem>
+                        <SelectItem value={kasir.nama} key={kasir.nama}>
+                          {kasir.nama}
+                        </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
@@ -174,7 +176,10 @@ export default function Page() {
 
                     <SelectContent>
                       {dataLoket?.data.map((loket) => (
-                        <SelectItem value={loket.kodeloket}>
+                        <SelectItem
+                          value={loket.kodeloket}
+                          key={loket.kodeloket}
+                        >
                           {loket.kodeloket}
                         </SelectItem>
                       ))}
@@ -188,7 +193,13 @@ export default function Page() {
           </div>
 
           {UserData && (
-            <PDFReport isLoading={UserLoading} data={UserData.data} rekapitulasi={UserData.rekapitulasi}/>
+            <PDFReport
+              isLoading={UserLoading}
+              data={UserData.data}
+              rekapitulasi={UserData.rekapitulasi}
+              filter={UserData.filter}
+              periode={UserData.periode}
+            />
           )}
         </div>
 
