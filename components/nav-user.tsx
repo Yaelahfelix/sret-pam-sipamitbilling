@@ -35,6 +35,7 @@ import axios from 'axios'
 import { Skeleton } from "@/components/ui/skeleton"
 import type { SessionValidationResult } from '@/lib/session'
 import { LogoutButton } from './logout-button'
+import Link from 'next/link'
 const fetcher  = (url : any) => axios.get(url).then(res => res.data)
 
 export function NavUser(
@@ -90,7 +91,10 @@ export function NavUser(
             <DropdownMenuGroup>
               <DropdownMenuItem>
                 <BadgeCheck className='' size={24}/>
-                 <p className='ml-4'>Profile</p>
+                  <Link href="/admin/reset-password">
+                    <p className='ml-4'>Reset Password</p>
+                  </Link>   
+
               </DropdownMenuItem>
    
 

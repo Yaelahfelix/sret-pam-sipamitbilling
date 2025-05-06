@@ -15,7 +15,8 @@ export type CapelRet = {
 	nama: string,
   alamat: string,
   nohp : string,
-  kelurahan: String
+  kelurahan: String,
+  tarif_id: string
 }
 
 export const columns: ColumnDef<CapelRet>[] = [
@@ -77,13 +78,14 @@ export const columns: ColumnDef<CapelRet>[] = [
       <DataTableColumnHeader column={column} title="Kelurahan" />
     ),
   },
-  // {
-  //   id: "actions",
-  //   cell: function Cell({ row }) {
-  //     return (
-  //       <Actions id={row.original.id} no_pelanggan={row.original.nosamb} nama={row.original.nama} />
-  //     );
-  //   },
-  //   size: 40,
-  // },
+
+  {
+    id: "actions",
+    cell: function Cell({ row }) {
+      return (
+        <Actions id={row.original.id} no_pelanggan={row.original.nosamb} nama={row.original.nama} tarif_id={row.original.tarif_id}/>
+      );
+    },
+    size: 40,
+  },
 ]
