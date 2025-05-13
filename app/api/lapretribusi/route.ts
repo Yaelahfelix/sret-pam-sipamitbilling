@@ -29,12 +29,13 @@ export const GET = async (request: NextRequest) => {
       );
     }
 
+
     const query = `
       SELECT periode, nosamb, nama, alamat, kodegol, retribusi, kasir, loketbayar, rekair, dendatunggakan, meterai
       FROM drd 
       WHERE retribusi > 0 
         AND flaglunas = 1 
-        AND tglbayar BETWEEN ? AND ?
+        AND date(tglbayar) BETWEEN ? AND ?
         ${kasir ? "AND kasir = ?" : ""}
         ${loketbayar ? "AND loketbayar = ?" : ""}
     `;
@@ -42,9 +43,9 @@ export const GET = async (request: NextRequest) => {
     const queryParams: any[] = [start, end];
     if (kasir) queryParams.push(kasir);
     if (loketbayar) queryParams.push(loketbayar);
-
+    console.log(queryParams);
     const [data] = await db.query<RowDataPacket[]>(query, queryParams);
-
+ 
     const query2 = `
     SELECT sum(retribusi) as totalrp, count(nosamb) as lbr, kasir 
     FROM drd 

@@ -130,7 +130,7 @@ export default function Page() {
         <div className="flex justify-between">
           <div className="w-full flex flex-row gap-4 items-end">
             <div className="flex flex-col gap-4">
-              <Label>Periode Aduan</Label>
+              <Label>Periode Pembayaran</Label>
               <DateRangePicker
                 onUpdate={(values) => {
                   setDates({

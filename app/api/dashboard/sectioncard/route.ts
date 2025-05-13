@@ -21,7 +21,7 @@ export async function GET(request : Request) {
 			select  
 (select count(*) as jml1 from capel_ret a left join tarif_ret b on a.tarif_id=b.id where ISNULL(a.tarif_id)) as jml1,
 (Select Count(retribusi) from drd where flaglunas=1 and date_format(tglbayar,"%Y%m")=date_format(current_Date,"%Y%m") and retribusi>0) as jml2,
-(Select sum(retribusi) from drd where flaglunas=1 and date_format(tglbayar,"%Y%m")=date_format(current_Date,"%Y%m")) as jml3
+(Select ifnull(sum(retribusi),0) from drd where flaglunas=1 and date_format(tglbayar,"%Y%m")=date_format(current_Date,"%Y%m") AND retribusi>0) as jml3
 			`,[]);
 		// // await db.end();
 		
