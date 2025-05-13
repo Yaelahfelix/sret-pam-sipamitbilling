@@ -8,7 +8,7 @@ import { format } from "date-fns";
 import { id } from "date-fns/locale";
 import { Button } from "@/components/ui/button";
 import logo from "@/public/nlogo.svg";
-
+import * as XLSX from 'xlsx';
 // Props type definition
 type DRDTableProps = {
   data?: any;
@@ -345,15 +345,28 @@ const PDFReport: React.FC<DRDTableProps> = (props) => {
     `,
   });
 
+  const downloadExcel = (data : any) => {
+    const worksheet = XLSX.utils.json_to_sheet(data);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+    //let buffer = XLSX.write(workbook, { bookType: "xlsx", type: "buffer" });
+    //XLSX.write(workbook, { bookType: "xlsx", type: "binary" });
+    XLSX.writeFile(workbook, "CalonPelPemungutan.xlsx");
+  };
+
   return (
     <div>
       <div ref={componentRef} className="hidden-print">
         <ReportPrintComponent {...props} />
       </div>
-
-      <Button onClick={handlePrint as any} disabled={props.isLoading}>
-        Cetak
-      </Button>
+      <div className="flex flex-row justify-start place-content-end gap-2">
+        <Button onClick={()=> downloadExcel(props.data)} disabled={props.isLoading}>
+          Export Excel
+        </Button>
+        <Button onClick={handlePrint as any} disabled={props.isLoading}>
+          Cetak
+        </Button>
+      </div>
 
       <style jsx>{`
         .hidden-print {

@@ -11,14 +11,15 @@ import { DRD } from "./columns";
 import logo from "@/public/nlogo.svg";
 import { Rekapitulasi } from "./page";
 import { formatRupiah } from "@/lib/formatRp";
+import * as XLSX from 'xlsx';
 
 // Props type definition
 type DRDTableProps = {
-  data?: DRD[];
+  data: DRD[];
   periode?: string;
   filter?: string;
   subtitle?: string;
-  rekapitulasi?: Rekapitulasi;
+  rekapitulasi: Rekapitulasi;
   footer?: string;
   isLoading: boolean;
 };
@@ -242,8 +243,37 @@ const ReportPrintComponent = React.forwardRef<HTMLDivElement, DRDTableProps>(
                           >
                             {formatRupiah(item.retribusi)}
                           </td>
+                          
                         </tr>
                       ))}
+                        <tr key={"foote"}>
+                          <td
+                            style={{
+                              border: "1px solid #000",
+                              padding: "5px",
+                              fontSize: "12px",
+                            }}
+                          colSpan={5}
+                          >
+                           Total
+                          </td>
+                          <td
+                            style={{
+                              border: "1px solid #000",
+                              padding: "5px",
+                              fontSize: "12px",
+                              textAlign: "right",
+                            }}
+                      
+                          >
+                            {formatRupiah(
+                              data?.reduce((acc, item) => {
+                                return acc + Number(item.retribusi);
+                              },0)
+                            )}
+                          </td>
+                        </tr>
+    
                     </tbody>
                   </table>
 
@@ -331,6 +361,47 @@ const ReportPrintComponent = React.forwardRef<HTMLDivElement, DRDTableProps>(
                               </td>
                             </tr>
                           ))}
+                          <tr key={"footerkasir"}>
+                          <td
+                            style={{
+                              border: "1px solid #000",
+                              padding: "5px",
+                              fontSize: "12px",
+                            }}
+       
+                          >
+                            Total
+                          </td>
+                          <td
+                              style={{
+                                border: "1px solid #000",
+                                padding: "5px",
+                                fontSize: "12px",
+                                textAlign: "right",
+                              }}>
+                              {formatRupiah(
+                                rekapitulasi.kasir.reduce((acc, item) => {
+                                  return acc + Number(item.lbr);
+                                }, 0)
+                              ).replace("Rp", "")}
+                          </td>
+                          <td
+                            style={{
+                              border: "1px solid #000",
+                              padding: "5px",
+                              fontSize: "12px",
+                              textAlign: "right",
+                            }}
+                      
+                          >
+                            {formatRupiah(
+                              rekapitulasi.kasir.reduce((acc, item) => {
+                                return acc + parseInt(item.totalrp ?? "0");
+                              }, 0)
+                            )}
+                          </td>
+                          </tr>
+
                         </tbody>
                       </table>
                     </div>
@@ -384,7 +455,7 @@ const ReportPrintComponent = React.forwardRef<HTMLDivElement, DRDTableProps>(
                         </thead>
 
                         <tbody>
-                          {rekapitulasi?.kasir?.map((item, index) => (
+                          {rekapitulasi?.loketBayar?.map((item, index) => (
                             <tr key={index}>
                               <td
                                 style={{
@@ -394,7 +465,7 @@ const ReportPrintComponent = React.forwardRef<HTMLDivElement, DRDTableProps>(
                                   textAlign: "right",
                                 }}
                               >
-                                {item.kasir}
+                                {item.loketbayar}
                               </td>
                               <td
                                 style={{
@@ -418,6 +489,47 @@ const ReportPrintComponent = React.forwardRef<HTMLDivElement, DRDTableProps>(
                               </td>
                             </tr>
                           ))}
+                          <tr key={"footerloket"}>
+                            <td
+                              style={{
+                                border: "1px solid #000",
+                                padding: "5px",
+                                fontSize: "12px",
+                              }}
+                            >
+                            Total
+                            </td>
+                            <td
+                              style={{
+                                border: "1px solid #000",
+                                padding: "5px",
+                                fontSize: "12px",
+                                textAlign: "right",
+                              }}
+                        
+                            >
+                              {formatRupiah(
+                                rekapitulasi.loketBayar.reduce((acc, item) => {
+                                  return acc + Number(item.lbr);
+                                }, 0)
+                              ).replace("Rp", "")}
+                            </td>
+                            <td
+                              style={{
+                                border: "1px solid #000",
+                                padding: "5px",
+                                fontSize: "12px",
+                                textAlign: "right",
+                              }}
+                        
+                            >
+                              {formatRupiah(
+                                rekapitulasi.loketBayar.reduce((acc, item) => {
+                                  return acc + parseInt(item.totalrp ?? "0");
+                                }, 0)
+                              )}
+                            </td>
+                          </tr>
                         </tbody>
                       </table>
                     </div>
@@ -526,16 +638,29 @@ const PDFReport: React.FC<DRDTableProps> = (props) => {
     }
     `,
   });
+  const downloadExcel = (data : any) => {
+    const worksheet = XLSX.utils.json_to_sheet(data);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+    //let buffer = XLSX.write(workbook, { bookType: "xlsx", type: "buffer" });
+    //XLSX.write(workbook, { bookType: "xlsx", type: "binary" });
+    XLSX.writeFile(workbook, "DaftarPenerimaanRetribusi.xlsx");
+  };
 
   return (
     <div>
       <div ref={componentRef} className="hidden-print">
         <ReportPrintComponent {...props} />
       </div>
-
-      <Button onClick={handlePrint as any} disabled={props.isLoading}>
-        Cetak
+      <div className="flex flex-row justify-start place-content-end gap-2">
+        <Button onClick={()=> downloadExcel(props.data)} disabled={props.isLoading}>
+          Export Excel
+        </Button>
+        <Button onClick={handlePrint as any} disabled={props.isLoading}>
+          Cetak
       </Button>
+      </div>
+
 
       <style jsx>{`
         .hidden-print {
