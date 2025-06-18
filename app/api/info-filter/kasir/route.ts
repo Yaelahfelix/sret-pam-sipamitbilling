@@ -17,7 +17,7 @@ export const GET = async (request: NextRequest) => {
     }
     const [data] = await db.query<RowDataPacket[]>(
       `
-      SELECT id, nama 
+      SELECT id, nama,namauser 
       FROM userakses 
       ORDER BY nama ASC
       `
