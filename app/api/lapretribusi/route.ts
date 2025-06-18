@@ -35,7 +35,7 @@ export const GET = async (request: NextRequest) => {
       FROM drd 
       WHERE retribusi > 0 
         AND flaglunas = 1 
-        AND date(tglbayar) BETWEEN ? AND ?
+        AND DATE(tglbayar) BETWEEN ? AND ?
         ${kasir ? "AND kasir = ?" : ""}
         ${loketbayar ? "AND loketbayar = ?" : ""}
     `;
@@ -50,19 +50,18 @@ export const GET = async (request: NextRequest) => {
     SELECT sum(retribusi) as totalrp, count(nosamb) as lbr, kasir 
     FROM drd 
     WHERE retribusi > 0 
-      AND tglbayar BETWEEN ? AND ?
+      AND DATE(tglbayar) BETWEEN ? AND ?
       ${kasir ? "AND kasir = ?" : ""}
       ${loketbayar ? "AND loketbayar = ?" : ""}
     GROUP BY kasir
   `;
-
     const [kasirData] = await db.query<RowDataPacket[]>(query2, queryParams);
 
     const query3 = `
     SELECT sum(retribusi) as totalrp, count(nosamb) as lbr, loketbayar 
     FROM drd 
     WHERE retribusi > 0 
-      AND tglbayar BETWEEN ? AND ?
+      AND DATE(tglbayar) BETWEEN ? AND ?
       ${kasir ? "AND kasir = ?" : ""}
       ${loketbayar ? "AND loketbayar = ?" : ""}
     GROUP BY loketbayar
@@ -77,6 +76,7 @@ export const GET = async (request: NextRequest) => {
 
     if (kasir) filter += `| Kasir = ${kasir} `;
     if (loketbayar) filter += `| Loket Bayar = ${loketbayar} `;
+
     return NextResponse.json({
       status: 200,
       data,

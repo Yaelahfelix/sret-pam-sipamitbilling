@@ -334,7 +334,7 @@ const ReportPrintComponent = React.forwardRef<HTMLDivElement, DRDTableProps>(
                                   border: "1px solid #000",
                                   padding: "5px",
                                   fontSize: "12px",
-                                  textAlign: "right",
+                                  textAlign: "left",
                                 }}
                               >
                                 {item.kasir}
@@ -462,7 +462,7 @@ const ReportPrintComponent = React.forwardRef<HTMLDivElement, DRDTableProps>(
                                   border: "1px solid #000",
                                   padding: "5px",
                                   fontSize: "12px",
-                                  textAlign: "right",
+                                  textAlign: "left",
                                 }}
                               >
                                 {item.loketbayar}

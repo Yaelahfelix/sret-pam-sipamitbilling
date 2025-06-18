@@ -91,7 +91,7 @@ export default function Page() {
     data: dataKasir,
     error: errorKasir,
     isLoading: isLoadingKasir,
-  } = useSWR<{ data: { nama: string }[] }>("/api/info-filter/kasir", fetcher);
+  } = useSWR<{ data: { nama: string,namauser : string }[] }>("/api/info-filter/kasir", fetcher);
   const {
     data: dataLoket,
     error: errorLoket,
@@ -159,7 +159,7 @@ export default function Page() {
 
                     <SelectContent>
                       {dataKasir?.data.map((kasir) => (
-                        <SelectItem value={kasir.nama} key={kasir.nama}>
+                        <SelectItem value={kasir.namauser} key={kasir.namauser}>
                           {kasir.nama}
                         </SelectItem>
                       ))}
@@ -171,7 +171,7 @@ export default function Page() {
                   <Label>Loket Bayar</Label>
                   <Select onValueChange={setSelectedLoket}>
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Pilih loekt" />
+                      <SelectValue placeholder="Pilih loket" />
                     </SelectTrigger>
 
                     <SelectContent>
