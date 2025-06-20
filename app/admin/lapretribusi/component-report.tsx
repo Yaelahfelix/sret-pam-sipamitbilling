@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { useReactToPrint } from "react-to-print";
 import { Printer } from "lucide-react";
 
@@ -11,7 +11,14 @@ import { DRD } from "./columns";
 import logo from "@/public/nlogo.svg";
 import { Rekapitulasi } from "./page";
 import { formatRupiah } from "@/lib/formatRp";
-import * as XLSX from 'xlsx';
+import * as XLSX from "xlsx";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
 
 // Props type definition
 type DRDTableProps = {
@@ -22,11 +29,14 @@ type DRDTableProps = {
   rekapitulasi: Rekapitulasi;
   footer?: string;
   isLoading: boolean;
+  optionCetak?: OptionCetak;
 };
+
+type OptionCetak = "all" | "detail" | "rekap";
 
 // Component to be printed
 const ReportPrintComponent = React.forwardRef<HTMLDivElement, DRDTableProps>(
-  ({ data = [], rekapitulasi, footer, filter, periode }, ref) => {
+  ({ data = [], rekapitulasi, footer, filter, periode, optionCetak }, ref) => {
     return (
       <div
         ref={ref}
@@ -99,153 +109,153 @@ const ReportPrintComponent = React.forwardRef<HTMLDivElement, DRDTableProps>(
             <tr>
               <td>
                 <div>
-                  <table
-                    style={{
-                      width: "100%",
-                      borderCollapse: "collapse",
-                    }}
-                  >
-                    {/* Table Header */}
-                    <thead
+                  {(optionCetak === "all" || optionCetak === "detail") && (
+                    <table
                       style={{
-                        display: "table-header-group",
+                        width: "100%",
+                        borderCollapse: "collapse",
                       }}
                     >
-                      <tr>
-                        <th colSpan={10}>
-                          <div className="text-xs text-left font-normal pb-1">
-                            {filter}
-                          </div>
-                        </th>
-                      </tr>
-                      <tr style={{ backgroundColor: "#f0f0f0" }}>
-                        <th
-                          style={{
-                            border: "1px solid #000",
-                            padding: "5px",
-                            fontSize: "12px",
-                            width: "4%",
-                          }}
-                        >
-                          No
-                        </th>
-                        <th
-                          style={{
-                            border: "1px solid #000",
-                            padding: "5px",
-                            fontSize: "12px",
-                            width: "10%",
-                          }}
-                        >
-                          Periode
-                        </th>
-                        <th
-                          style={{
-                            border: "1px solid #000",
-                            padding: "5px",
-                            fontSize: "12px",
-                            width: "10%",
-                          }}
-                        >
-                          No Pelanggan
-                        </th>
-                        <th
-                          style={{
-                            border: "1px solid #000",
-                            padding: "5px",
-                            fontSize: "12px",
-                            width: "20%",
-                          }}
-                        >
-                          Nama
-                        </th>
-                        <th
-                          style={{
-                            border: "1px solid #000",
-                            padding: "5px",
-                            fontSize: "12px",
-                            width: "6%",
-                          }}
-                        >
-                          Kode Gol
-                        </th>
+                      {/* Table Header */}
+                      <thead
+                        style={{
+                          display: "table-header-group",
+                        }}
+                      >
+                        <tr>
+                          <th colSpan={10}>
+                            <div className="text-xs text-left font-normal pb-1">
+                              {filter}
+                            </div>
+                          </th>
+                        </tr>
+                        <tr style={{ backgroundColor: "#f0f0f0" }}>
+                          <th
+                            style={{
+                              border: "1px solid #000",
+                              padding: "5px",
+                              fontSize: "12px",
+                              width: "4%",
+                            }}
+                          >
+                            No
+                          </th>
+                          <th
+                            style={{
+                              border: "1px solid #000",
+                              padding: "5px",
+                              fontSize: "12px",
+                              width: "10%",
+                            }}
+                          >
+                            Periode
+                          </th>
+                          <th
+                            style={{
+                              border: "1px solid #000",
+                              padding: "5px",
+                              fontSize: "12px",
+                              width: "10%",
+                            }}
+                          >
+                            No Pelanggan
+                          </th>
+                          <th
+                            style={{
+                              border: "1px solid #000",
+                              padding: "5px",
+                              fontSize: "12px",
+                              width: "20%",
+                            }}
+                          >
+                            Nama
+                          </th>
+                          <th
+                            style={{
+                              border: "1px solid #000",
+                              padding: "5px",
+                              fontSize: "12px",
+                              width: "6%",
+                            }}
+                          >
+                            Kode Gol
+                          </th>
 
-                        <th
-                          style={{
-                            border: "1px solid #000",
-                            padding: "5px",
-                            fontSize: "12px",
-                            width: "10%",
-                            textAlign: "right",
-                          }}
-                        >
-                          Total
-                        </th>
-                      </tr>
-                    </thead>
-
-                    <tbody>
-                      {data?.map((item, index) => (
-                        <tr key={index}>
-                          <td
+                          <th
                             style={{
                               border: "1px solid #000",
                               padding: "5px",
                               fontSize: "12px",
-                            }}
-                          >
-                            {index + 1}
-                          </td>
-                          <td
-                            style={{
-                              border: "1px solid #000",
-                              padding: "5px",
-                              fontSize: "12px",
-                            }}
-                          >
-                            {item.periode}
-                          </td>
-                          <td
-                            style={{
-                              border: "1px solid #000",
-                              padding: "5px",
-                              fontSize: "12px",
-                            }}
-                          >
-                            {item.nosamb}
-                          </td>
-                          <td
-                            style={{
-                              border: "1px solid #000",
-                              padding: "5px",
-                              fontSize: "12px",
-                            }}
-                          >
-                            {item.nama}
-                          </td>
-                          <td
-                            style={{
-                              border: "1px solid #000",
-                              padding: "5px",
-                              fontSize: "12px",
-                            }}
-                          >
-                            {item.kodegol}
-                          </td>
-
-                          <td
-                            style={{
-                              border: "1px solid #000",
-                              padding: "5px",
-                              fontSize: "12px",
+                              width: "10%",
                               textAlign: "right",
                             }}
                           >
-                            {formatRupiah(item.retribusi)}
-                          </td>
-                          
+                            Total
+                          </th>
                         </tr>
-                      ))}
+                      </thead>
+
+                      <tbody>
+                        {data?.map((item, index) => (
+                          <tr key={index}>
+                            <td
+                              style={{
+                                border: "1px solid #000",
+                                padding: "5px",
+                                fontSize: "12px",
+                              }}
+                            >
+                              {index + 1}
+                            </td>
+                            <td
+                              style={{
+                                border: "1px solid #000",
+                                padding: "5px",
+                                fontSize: "12px",
+                              }}
+                            >
+                              {item.periode}
+                            </td>
+                            <td
+                              style={{
+                                border: "1px solid #000",
+                                padding: "5px",
+                                fontSize: "12px",
+                              }}
+                            >
+                              {item.nosamb}
+                            </td>
+                            <td
+                              style={{
+                                border: "1px solid #000",
+                                padding: "5px",
+                                fontSize: "12px",
+                              }}
+                            >
+                              {item.nama}
+                            </td>
+                            <td
+                              style={{
+                                border: "1px solid #000",
+                                padding: "5px",
+                                fontSize: "12px",
+                              }}
+                            >
+                              {item.kodegol}
+                            </td>
+
+                            <td
+                              style={{
+                                border: "1px solid #000",
+                                padding: "5px",
+                                fontSize: "12px",
+                                textAlign: "right",
+                              }}
+                            >
+                              {formatRupiah(item.retribusi)}
+                            </td>
+                          </tr>
+                        ))}
                         <tr key={"foote"}>
                           <td
                             style={{
@@ -253,9 +263,9 @@ const ReportPrintComponent = React.forwardRef<HTMLDivElement, DRDTableProps>(
                               padding: "5px",
                               fontSize: "12px",
                             }}
-                          colSpan={5}
+                            colSpan={5}
                           >
-                           Total
+                            Total
                           </td>
                           <td
                             style={{
@@ -264,208 +274,112 @@ const ReportPrintComponent = React.forwardRef<HTMLDivElement, DRDTableProps>(
                               fontSize: "12px",
                               textAlign: "right",
                             }}
-                      
                           >
                             {formatRupiah(
                               data?.reduce((acc, item) => {
                                 return acc + Number(item.retribusi);
-                              },0)
-                            )}
-                          </td>
-                        </tr>
-    
-                    </tbody>
-                  </table>
-
-                  <div className="flex gap-5 mt-5 page-break">
-                    <div className="w-6/12">
-                      <h1>Rekapitulasi Kasir</h1>
-                      <table
-                        style={{
-                          width: "100%",
-                          borderCollapse: "collapse",
-                        }}
-                      >
-                        {/* Table Header */}
-                        <thead
-                          style={{
-                            display: "table-header-group",
-                          }}
-                        >
-                          <tr style={{ backgroundColor: "#f0f0f0" }}>
-                            <th
-                              style={{
-                                border: "1px solid #000",
-                                padding: "5px",
-                                fontSize: "12px",
-                                width: "35%",
-                              }}
-                            >
-                              Kasir
-                            </th>
-                            <th
-                              style={{
-                                border: "1px solid #000",
-                                padding: "5px",
-                                fontSize: "12px",
-                                width: "30%",
-                              }}
-                            >
-                              Banyak Lembar
-                            </th>
-                            <th
-                              style={{
-                                border: "1px solid #000",
-                                padding: "5px",
-                                fontSize: "12px",
-                                width: "35%",
-                              }}
-                            >
-                              Total
-                            </th>
-                          </tr>
-                        </thead>
-
-                        <tbody>
-                          {rekapitulasi?.kasir?.map((item, index) => (
-                            <tr key={index}>
-                              <td
-                                style={{
-                                  border: "1px solid #000",
-                                  padding: "5px",
-                                  fontSize: "12px",
-                                  textAlign: "left",
-                                }}
-                              >
-                                {item.kasir}
-                              </td>
-                              <td
-                                style={{
-                                  border: "1px solid #000",
-                                  padding: "5px",
-                                  fontSize: "12px",
-                                  textAlign: "right",
-                                }}
-                              >
-                                {item.lbr}
-                              </td>
-                              <td
-                                style={{
-                                  border: "1px solid #000",
-                                  padding: "5px",
-                                  fontSize: "12px",
-                                  textAlign: "right",
-                                }}
-                              >
-                                {formatRupiah(parseInt(item.totalrp))}
-                              </td>
-                            </tr>
-                          ))}
-                          <tr key={"footerkasir"}>
-                          <td
-                            style={{
-                              border: "1px solid #000",
-                              padding: "5px",
-                              fontSize: "12px",
-                            }}
-       
-                          >
-                            Total
-                          </td>
-                          <td
-                              style={{
-                                border: "1px solid #000",
-                                padding: "5px",
-                                fontSize: "12px",
-                                textAlign: "right",
-                              }}>
-                              {formatRupiah(
-                                rekapitulasi.kasir.reduce((acc, item) => {
-                                  return acc + Number(item.lbr);
-                                }, 0)
-                              ).replace("Rp", "")}
-                          </td>
-                          <td
-                            style={{
-                              border: "1px solid #000",
-                              padding: "5px",
-                              fontSize: "12px",
-                              textAlign: "right",
-                            }}
-                      
-                          >
-                            {formatRupiah(
-                              rekapitulasi.kasir.reduce((acc, item) => {
-                                return acc + parseInt(item.totalrp ?? "0");
                               }, 0)
                             )}
                           </td>
-                          </tr>
+                        </tr>
+                      </tbody>
+                    </table>
+                  )}
 
-                        </tbody>
-                      </table>
-                    </div>
-
-                    <div className="w-6/12">
-                      <h1>Rekapitulasi Loket</h1>
-                      <table
-                        style={{
-                          width: "100%",
-                          borderCollapse: "collapse",
-                        }}
-                      >
-                        {/* Table Header */}
-                        <thead
+                  {(optionCetak === "all" || optionCetak === "rekap") && (
+                    <div className="flex gap-5 mt-5 page-break">
+                      <div className="w-6/12">
+                        <h1>Rekapitulasi Kasir</h1>
+                        <table
                           style={{
-                            display: "table-header-group",
+                            width: "100%",
+                            borderCollapse: "collapse",
                           }}
                         >
-                          <tr style={{ backgroundColor: "#f0f0f0" }}>
-                            <th
-                              style={{
-                                border: "1px solid #000",
-                                padding: "5px",
-                                fontSize: "12px",
-                                width: "35%",
-                              }}
-                            >
-                              Kasir
-                            </th>
-                            <th
-                              style={{
-                                border: "1px solid #000",
-                                padding: "5px",
-                                fontSize: "12px",
-                                width: "30%",
-                              }}
-                            >
-                              Banyak Lembar
-                            </th>
-                            <th
-                              style={{
-                                border: "1px solid #000",
-                                padding: "5px",
-                                fontSize: "12px",
-                                width: "35%",
-                              }}
-                            >
-                              Total
-                            </th>
-                          </tr>
-                        </thead>
+                          {/* Table Header */}
+                          <thead
+                            style={{
+                              display: "table-header-group",
+                            }}
+                          >
+                            <tr style={{ backgroundColor: "#f0f0f0" }}>
+                              <th
+                                style={{
+                                  border: "1px solid #000",
+                                  padding: "5px",
+                                  fontSize: "12px",
+                                  width: "35%",
+                                }}
+                              >
+                                Kasir
+                              </th>
+                              <th
+                                style={{
+                                  border: "1px solid #000",
+                                  padding: "5px",
+                                  fontSize: "12px",
+                                  width: "30%",
+                                }}
+                              >
+                                Banyak Lembar
+                              </th>
+                              <th
+                                style={{
+                                  border: "1px solid #000",
+                                  padding: "5px",
+                                  fontSize: "12px",
+                                  width: "35%",
+                                }}
+                              >
+                                Total
+                              </th>
+                            </tr>
+                          </thead>
 
-                        <tbody>
-                          {rekapitulasi?.loketBayar?.map((item, index) => (
-                            <tr key={index}>
+                          <tbody>
+                            {rekapitulasi?.kasir?.map((item, index) => (
+                              <tr key={index}>
+                                <td
+                                  style={{
+                                    border: "1px solid #000",
+                                    padding: "5px",
+                                    fontSize: "12px",
+                                    textAlign: "left",
+                                  }}
+                                >
+                                  {item.kasir}
+                                </td>
+                                <td
+                                  style={{
+                                    border: "1px solid #000",
+                                    padding: "5px",
+                                    fontSize: "12px",
+                                    textAlign: "right",
+                                  }}
+                                >
+                                  {item.lbr}
+                                </td>
+                                <td
+                                  style={{
+                                    border: "1px solid #000",
+                                    padding: "5px",
+                                    fontSize: "12px",
+                                    textAlign: "right",
+                                  }}
+                                >
+                                  {formatRupiah(parseInt(item.totalrp))}
+                                </td>
+                              </tr>
+                            ))}
+                            <tr key={"footerkasir"}>
                               <td
                                 style={{
                                   border: "1px solid #000",
                                   padding: "5px",
                                   fontSize: "12px",
-                                  textAlign: "left",
                                 }}
                               >
-                                {item.loketbayar}
+                                Total
                               </td>
                               <td
                                 style={{
@@ -475,7 +389,11 @@ const ReportPrintComponent = React.forwardRef<HTMLDivElement, DRDTableProps>(
                                   textAlign: "right",
                                 }}
                               >
-                                {item.lbr}
+                                {formatRupiah(
+                                  rekapitulasi.kasir.reduce((acc, item) => {
+                                    return acc + Number(item.lbr);
+                                  }, 0)
+                                ).replace("Rp", "")}
                               </td>
                               <td
                                 style={{
@@ -485,55 +403,152 @@ const ReportPrintComponent = React.forwardRef<HTMLDivElement, DRDTableProps>(
                                   textAlign: "right",
                                 }}
                               >
-                                {formatRupiah(parseInt(item.totalrp))}
+                                {formatRupiah(
+                                  rekapitulasi.kasir.reduce((acc, item) => {
+                                    return acc + parseInt(item.totalrp ?? "0");
+                                  }, 0)
+                                )}
                               </td>
                             </tr>
-                          ))}
-                          <tr key={"footerloket"}>
-                            <td
-                              style={{
-                                border: "1px solid #000",
-                                padding: "5px",
-                                fontSize: "12px",
-                              }}
-                            >
-                            Total
-                            </td>
-                            <td
-                              style={{
-                                border: "1px solid #000",
-                                padding: "5px",
-                                fontSize: "12px",
-                                textAlign: "right",
-                              }}
-                        
-                            >
-                              {formatRupiah(
-                                rekapitulasi.loketBayar.reduce((acc, item) => {
-                                  return acc + Number(item.lbr);
-                                }, 0)
-                              ).replace("Rp", "")}
-                            </td>
-                            <td
-                              style={{
-                                border: "1px solid #000",
-                                padding: "5px",
-                                fontSize: "12px",
-                                textAlign: "right",
-                              }}
-                        
-                            >
-                              {formatRupiah(
-                                rekapitulasi.loketBayar.reduce((acc, item) => {
-                                  return acc + parseInt(item.totalrp ?? "0");
-                                }, 0)
-                              )}
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
+                          </tbody>
+                        </table>
+                      </div>
+
+                      <div className="w-6/12">
+                        <h1>Rekapitulasi Loket</h1>
+                        <table
+                          style={{
+                            width: "100%",
+                            borderCollapse: "collapse",
+                          }}
+                        >
+                          {/* Table Header */}
+                          <thead
+                            style={{
+                              display: "table-header-group",
+                            }}
+                          >
+                            <tr style={{ backgroundColor: "#f0f0f0" }}>
+                              <th
+                                style={{
+                                  border: "1px solid #000",
+                                  padding: "5px",
+                                  fontSize: "12px",
+                                  width: "35%",
+                                }}
+                              >
+                                Kasir
+                              </th>
+                              <th
+                                style={{
+                                  border: "1px solid #000",
+                                  padding: "5px",
+                                  fontSize: "12px",
+                                  width: "30%",
+                                }}
+                              >
+                                Banyak Lembar
+                              </th>
+                              <th
+                                style={{
+                                  border: "1px solid #000",
+                                  padding: "5px",
+                                  fontSize: "12px",
+                                  width: "35%",
+                                }}
+                              >
+                                Total
+                              </th>
+                            </tr>
+                          </thead>
+
+                          <tbody>
+                            {rekapitulasi?.loketBayar?.map((item, index) => (
+                              <tr key={index}>
+                                <td
+                                  style={{
+                                    border: "1px solid #000",
+                                    padding: "5px",
+                                    fontSize: "12px",
+                                    textAlign: "left",
+                                  }}
+                                >
+                                  {item.loketbayar}
+                                </td>
+                                <td
+                                  style={{
+                                    border: "1px solid #000",
+                                    padding: "5px",
+                                    fontSize: "12px",
+                                    textAlign: "right",
+                                  }}
+                                >
+                                  {item.lbr}
+                                </td>
+                                <td
+                                  style={{
+                                    border: "1px solid #000",
+                                    padding: "5px",
+                                    fontSize: "12px",
+                                    textAlign: "right",
+                                  }}
+                                >
+                                  {formatRupiah(parseInt(item.totalrp))}
+                                </td>
+                              </tr>
+                            ))}
+                            <tr key={"footerloket"}>
+                              <td
+                                style={{
+                                  border: "1px solid #000",
+                                  padding: "5px",
+                                  fontSize: "12px",
+                                }}
+                              >
+                                Total
+                              </td>
+                              <td
+                                style={{
+                                  border: "1px solid #000",
+                                  padding: "5px",
+                                  fontSize: "12px",
+                                  textAlign: "right",
+                                }}
+                              >
+                                {formatRupiah(
+                                  rekapitulasi.loketBayar.reduce(
+                                    (acc, item) => {
+                                      return acc + Number(item.lbr);
+                                    },
+                                    0
+                                  )
+                                ).replace("Rp", "")}
+                              </td>
+                              <td
+                                style={{
+                                  border: "1px solid #000",
+                                  padding: "5px",
+                                  fontSize: "12px",
+                                  textAlign: "right",
+                                }}
+                              >
+                                {formatRupiah(
+                                  rekapitulasi.loketBayar.reduce(
+                                    (acc, item) => {
+                                      return (
+                                        acc + parseInt(item.totalrp ?? "0")
+                                      );
+                                    },
+                                    0
+                                  )
+                                )}
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </div>
               </td>
             </tr>
@@ -638,7 +653,7 @@ const PDFReport: React.FC<DRDTableProps> = (props) => {
     }
     `,
   });
-  const downloadExcel = (data : any) => {
+  const downloadExcel = (data: any) => {
     const worksheet = XLSX.utils.json_to_sheet(data);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
@@ -647,20 +662,51 @@ const PDFReport: React.FC<DRDTableProps> = (props) => {
     XLSX.writeFile(workbook, "DaftarPenerimaanRetribusi.xlsx");
   };
 
+  const [optionCetak, setOptionCetak] = useState<OptionCetak>("all");
+
   return (
     <div>
       <div ref={componentRef} className="hidden-print">
-        <ReportPrintComponent {...props} />
+        <ReportPrintComponent {...props} optionCetak={optionCetak} />
       </div>
-      <div className="flex flex-row justify-start place-content-end gap-2">
-        <Button onClick={()=> downloadExcel(props.data)} disabled={props.isLoading}>
+      <div className="flex flex-row justify-start place-content-end gap-2 items-center">
+        <Button
+          onClick={() => downloadExcel(props.data)}
+          disabled={props.isLoading}
+        >
           Export Excel
         </Button>
-        <Button onClick={handlePrint as any} disabled={props.isLoading}>
-          Cetak
-      </Button>
+        <div className="p-5 border border-border rounded-lg flex gap-5">
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button variant={"outline"}>Pengaturan Cetak</Button>
+            </PopoverTrigger>
+            <PopoverContent>
+              <RadioGroup
+                defaultValue={optionCetak}
+                onValueChange={(val: OptionCetak) => setOptionCetak(val)}
+                value={optionCetak}
+              >
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="all" id="all" />
+                  <Label htmlFor="all">All</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="detail" id="detail" />
+                  <Label htmlFor="detail">Detail</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="rekap" id="rekap" />
+                  <Label htmlFor="rekap">Rekapitulasi</Label>
+                </div>
+              </RadioGroup>
+            </PopoverContent>
+          </Popover>
+          <Button onClick={handlePrint as any} disabled={props.isLoading}>
+            Cetak
+          </Button>
+        </div>
       </div>
-
 
       <style jsx>{`
         .hidden-print {

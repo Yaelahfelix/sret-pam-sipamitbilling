@@ -91,7 +91,10 @@ export default function Page() {
     data: dataKasir,
     error: errorKasir,
     isLoading: isLoadingKasir,
-  } = useSWR<{ data: { nama: string,namauser : string }[] }>("/api/info-filter/kasir", fetcher);
+  } = useSWR<{ data: { nama: string; namauser: string }[] }>(
+    "/api/info-filter/kasir",
+    fetcher
+  );
   const {
     data: dataLoket,
     error: errorLoket,
@@ -127,7 +130,7 @@ export default function Page() {
   return (
     <>
       <div className="flex flex-col gap-5 justify-center content-center p-5">
-        <div className="flex justify-between">
+        <div className="flex justify-between items-center">
           <div className="w-full flex flex-row gap-4 items-end">
             <div className="flex flex-col gap-4">
               <Label>Periode Pembayaran</Label>

@@ -7,15 +7,15 @@ import { format } from "date-fns";
 export const GET = async (request: NextRequest) => {
   try {
     const { user } = await getCurrentSession();
-    // if (user === null) {
-    //   return NextResponse.json(
-    //     {
-    //       success: false,
-    //       message: "Unauthorize",
-    //     },
-    //     { status: 403 }
-    //   );
-    // }
+    if (user === null) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Unauthorize",
+        },
+        { status: 403 }
+      );
+    }
     const searchParams = request.nextUrl.searchParams;
     const start = searchParams.get("start");
     const end = searchParams.get("end");
@@ -28,7 +28,6 @@ export const GET = async (request: NextRequest) => {
         { status: 400 }
       );
     }
-
 
     const query = `
       SELECT periode, nosamb, nama, alamat, kodegol, retribusi, kasir, loketbayar, rekair, dendatunggakan, meterai
@@ -45,7 +44,7 @@ export const GET = async (request: NextRequest) => {
     if (loketbayar) queryParams.push(loketbayar);
     console.log(queryParams);
     const [data] = await db.query<RowDataPacket[]>(query, queryParams);
- 
+
     const query2 = `
     SELECT sum(retribusi) as totalrp, count(nosamb) as lbr, kasir 
     FROM drd 
