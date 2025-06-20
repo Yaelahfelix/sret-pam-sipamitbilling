@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import { ColumnDef } from "@tanstack/react-table"
-import { DataTableColumnHeader } from "@/components/datatable-header-column"
-import Actions from "./actions"
+import { ColumnDef } from "@tanstack/react-table";
+import { DataTableColumnHeader } from "@/components/datatable-header-column";
+import Actions from "./actions";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,13 +19,14 @@ import {
 import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { Ellipsis } from "lucide-react";
+import { formatNumber } from "@/lib/utils";
 // define data
 export type Tarif = {
-  id: string,
-	kode: string,
-  nama: string,
-  tarif: number
-}
+  id: string;
+  kode: string;
+  nama: string;
+  tarif: number;
+};
 
 export const columns: ColumnDef<Tarif>[] = [
   {
@@ -36,9 +37,9 @@ export const columns: ColumnDef<Tarif>[] = [
     cell: ({ row }) => <div className="text-center">{row.index + 1}</div>,
   },
   {
-    accessorKey: "kode",
+    accessorKey: "kode_golongan",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Kode" />
+      <DataTableColumnHeader column={column} title="Kode Gol" />
     ),
   },
   {
@@ -48,20 +49,12 @@ export const columns: ColumnDef<Tarif>[] = [
     ),
   },
   {
-    accessorKey: "tarif",
+    accessorKey: "retribusi",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Tarif" />
     ),
-  },
-  {
-    id: "actions",
     cell: function Cell({ row }) {
-      const [isUpdatePending, startUpdateTransition] = React.useTransition();
-
-      return (
-        <Actions id={row.original.id} />
-      );
+      return formatNumber(row.getValue("retribusi"));
     },
-    size: 40,
   },
-]
+];

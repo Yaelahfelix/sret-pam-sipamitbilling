@@ -162,7 +162,7 @@ export default function Page() {
 
                     <SelectContent>
                       {dataKasir?.data.map((kasir) => (
-                        <SelectItem value={kasir.namauser} key={kasir.namauser}>
+                        <SelectItem value={kasir.nama} key={kasir.nama}>
                           {kasir.nama}
                         </SelectItem>
                       ))}

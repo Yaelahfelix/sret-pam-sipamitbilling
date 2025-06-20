@@ -30,13 +30,11 @@ export const GET = async (request: NextRequest) => {
     }
 
     const query = `
-      SELECT periode, nosamb, nama, alamat, kodegol, retribusi, kasir, loketbayar, rekair, dendatunggakan, meterai
-      FROM drd 
-      WHERE retribusi > 0 
-        AND flaglunas = 1 
+      SELECT id,periode_rek as periode, no_pelanggan, nama, alamat, kodegol, retribusi, nama_user, nama_loket
+  FROM drd WHERE retribusi > 0 AND flaglunas = 1 
         AND DATE(tglbayar) BETWEEN ? AND ?
-        ${kasir ? "AND kasir = ?" : ""}
-        ${loketbayar ? "AND loketbayar = ?" : ""}
+        ${kasir ? "AND nama_user = ?" : ""}
+        ${loketbayar ? "AND nama_loket= ?" : ""}
     `;
 
     const queryParams: any[] = [start, end];
@@ -46,24 +44,24 @@ export const GET = async (request: NextRequest) => {
     const [data] = await db.query<RowDataPacket[]>(query, queryParams);
 
     const query2 = `
-    SELECT sum(retribusi) as totalrp, count(nosamb) as lbr, kasir 
+    SELECT sum(retribusi) as totalrp, count(no_pelanggan) as lbr, nama_user 
     FROM drd 
     WHERE retribusi > 0 
       AND DATE(tglbayar) BETWEEN ? AND ?
-      ${kasir ? "AND kasir = ?" : ""}
-      ${loketbayar ? "AND loketbayar = ?" : ""}
-    GROUP BY kasir
+      ${kasir ? "AND nama_user = ?" : ""}
+      ${loketbayar ? "AND nama_loket = ?" : ""}
+    GROUP BY nama_user
   `;
     const [kasirData] = await db.query<RowDataPacket[]>(query2, queryParams);
 
     const query3 = `
-    SELECT sum(retribusi) as totalrp, count(nosamb) as lbr, loketbayar 
+    SELECT sum(retribusi) as totalrp, count(no_pelanggan) as lbr, nama_loket 
     FROM drd 
     WHERE retribusi > 0 
       AND DATE(tglbayar) BETWEEN ? AND ?
-      ${kasir ? "AND kasir = ?" : ""}
-      ${loketbayar ? "AND loketbayar = ?" : ""}
-    GROUP BY loketbayar
+      ${kasir ? "AND nama_user = ?" : ""}
+      ${loketbayar ? "AND nama_loket = ?" : ""}
+    GROUP BY nama_loket
   `;
 
     const [loketbayarData] = await db.query<RowDataPacket[]>(

@@ -9,18 +9,14 @@ import { formatRupiah } from "@/lib/formatRp";
 // define data
 export type DRD = {
   id: string;
-  nosamb: string;
+  no_pelanggan: string;
   periode: string;
   nama: number;
   alamat: string;
   kodegol: string;
-  total: number;
-  kasir: string;
-  loketbayar: string;
-  rekair: number;
-  dendatunggakan: number;
-  meterai: number;
   retribusi: number;
+  nama_user: string;
+  nama_loket: string;
 };
 
 export const columns: ColumnDef<DRD>[] = [
@@ -46,7 +42,7 @@ export const columns: ColumnDef<DRD>[] = [
     ),
   },
   {
-    accessorKey: "nosamb",
+    accessorKey: "no_pelanggan",
     enableSorting: false,
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="No Pel" className="w-6" />
@@ -59,20 +55,20 @@ export const columns: ColumnDef<DRD>[] = [
     ),
   },
   {
-    accessorKey: "total",
+    accessorKey: "retribusi",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Total" />
+      <DataTableColumnHeader column={column} title="Total Retribusi" />
     ),
     cell: ({ row }) => formatRupiah(row.original.retribusi),
   },
   {
-    accessorKey: "kasir",
+    accessorKey: "nama_user",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Kasir" />
     ),
   },
   {
-    accessorKey: "loketbayar",
+    accessorKey: "nama_loket",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Loket Bayar" />
     ),

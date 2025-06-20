@@ -223,7 +223,7 @@ const ReportPrintComponent = React.forwardRef<HTMLDivElement, DRDTableProps>(
                                 fontSize: "12px",
                               }}
                             >
-                              {item.nosamb}
+                              {item.no_pelanggan}
                             </td>
                             <td
                               style={{

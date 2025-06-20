@@ -1,23 +1,23 @@
-"use client"
+"use client";
 
-import { ColumnDef } from "@tanstack/react-table"
-import { DataTableColumnHeader } from "@/components/datatable-header-column"
-import Actions from "./actions"
+import { ColumnDef } from "@tanstack/react-table";
+import { DataTableColumnHeader } from "@/components/datatable-header-column";
+import Actions from "./actions";
 
 import * as React from "react";
 import { formatNumber } from "@/lib/utils";
 // define data
 export type CapelRet = {
-  id: string,
-  nosamb : string,
-  koderet : string,
-  tarif : number,
-	nama: string,
-  alamat: string,
-  nohp : string,
-  kelurahan: String,
-  tarif_id: string
-}
+  id: string;
+  nosamb: string;
+  koderet: string;
+  tarif: number;
+  nama: string;
+  alamat: string;
+  nohp: string;
+  kelurahan: String;
+  tarif_id: string;
+};
 
 export const columns: ColumnDef<CapelRet>[] = [
   {
@@ -28,31 +28,31 @@ export const columns: ColumnDef<CapelRet>[] = [
     cell: ({ row }) => <div className="text-center">{row.index + 1}</div>,
   },
   {
-    accessorKey: "koderet",
-    enableSorting : false,
+    accessorKey: "kode_golongan",
+    enableSorting: false,
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Kode Ret." className="w-6" />
+      <DataTableColumnHeader
+        column={column}
+        title="Kode Gol."
+        className="w-6"
+      />
     ),
   },
   {
     accessorKey: "tarif",
-    enableSorting : false,
+    enableSorting: false,
     header: ({ column }) => (
-      
       <DataTableColumnHeader column={column} title="Tarif" className="w-6" />
     ),
     cell: function Cell({ row }) {
-          return (
-            formatNumber(row.getValue("tarif"))
-          );
-        },
+      return formatNumber(row.getValue("tarif"));
+    },
   },
   {
-    accessorKey: "nosamb",
+    accessorKey: "no_pelanggan",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="No Pelanggan" />
     ),
-
   },
   {
     accessorKey: "nama",
@@ -67,7 +67,7 @@ export const columns: ColumnDef<CapelRet>[] = [
     ),
   },
   {
-    accessorKey: "nohp",
+    accessorKey: "no_hp",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="No HP" />
     ),
@@ -79,13 +79,13 @@ export const columns: ColumnDef<CapelRet>[] = [
     ),
   },
 
-  {
-    id: "actions",
-    cell: function Cell({ row }) {
-      return (
-        <Actions id={row.original.id} no_pelanggan={row.original.nosamb} nama={row.original.nama} tarif_id={row.original.tarif_id}/>
-      );
-    },
-    size: 40,
-  },
-]
+  // {
+  //   id: "actions",
+  //   cell: function Cell({ row }) {
+  //     return (
+  //       <Actions id={row.original.id} no_pelanggan={row.original.nosamb} nama={row.original.nama} tarif_id={row.original.tarif_id}/>
+  //     );
+  //   },
+  //   size: 40,
+  // },
+];

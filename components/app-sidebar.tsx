@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 import {
   AudioWaveform,
   Book,
@@ -14,21 +14,20 @@ import {
   Settings2,
   SquareTerminal,
   User,
-} from "lucide-react"
+} from "lucide-react";
 
-import { NavMain } from "@/components/nav-main"
-import { NavProjects } from "@/components/nav-projects"
-import { NavUser } from "@/components/nav-user"
-import { TeamSwitcher } from "@/components/team-switcher"
+import { NavMain } from "@/components/nav-main";
+import { NavProjects } from "@/components/nav-projects";
+import { NavUser } from "@/components/nav-user";
+import { TeamSwitcher } from "@/components/team-switcher";
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
   SidebarRail,
-} from "@/components/ui/sidebar"
-import { NavLaporan } from "./nav-laporan"
-
+} from "@/components/ui/sidebar";
+import { NavLaporan } from "./nav-laporan";
 
 const data = {
   teams: [
@@ -44,12 +43,6 @@ const data = {
       url: "/admin",
       icon: SquareTerminal,
       isActive: true,
-      
-    },
-    {
-      title: "Calon Pel. PRetribusi",
-      url: "/admin/capel-ret",
-      icon: User,
     },
     {
       title: "Pel. PRetribusi",
@@ -69,21 +62,13 @@ const data = {
   ],
   laporan: [
     {
-      title: "Calon Pel. PRetribusi",
-      url: "/admin/cetakcalon-pungutan",
-      icon: Book,
-      isActive: true,
-      
-    },
-    {
       title: "Penerimaan Retribusi",
       url: "/admin/lapretribusi",
       icon: BookOpen,
       isActive: true,
-      
     },
   ],
-}
+};
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
@@ -97,9 +82,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         {/* <NavProjects projects={data.projects} /> */}
       </SidebarContent>
       <SidebarFooter>
-        <NavUser/>
+        <NavUser />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
-  )
+  );
 }
