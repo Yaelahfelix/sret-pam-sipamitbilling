@@ -33,8 +33,8 @@ export const GET = async (request: NextRequest) => {
       SELECT id,periode_rek as periode, no_pelanggan, nama, alamat, kodegol, retribusi, nama_user, nama_loket
   FROM drd WHERE retribusi > 0 AND flaglunas = 1 
         AND DATE(tglbayar) BETWEEN ? AND ?
-        ${kasir ? "AND nama_user = ?" : ""}
-        ${loketbayar ? "AND nama_loket= ?" : ""}
+        ${kasir && kasir !== "undefined" ? "AND nama_user = ?" : ""}
+        ${loketbayar && loketbayar !== "undefined" ? "AND nama_loket= ?" : ""}
     `;
 
     const queryParams: any[] = [start, end];
@@ -48,8 +48,8 @@ export const GET = async (request: NextRequest) => {
     FROM drd 
     WHERE retribusi > 0 
       AND DATE(tglbayar) BETWEEN ? AND ?
-      ${kasir ? "AND nama_user = ?" : ""}
-      ${loketbayar ? "AND nama_loket = ?" : ""}
+      ${kasir && kasir !== "undefined" ? "AND nama_user = ?" : ""}
+      ${loketbayar && loketbayar !== "undefined" ? "AND nama_loket = ?" : ""}
     GROUP BY nama_user
   `;
     const [kasirData] = await db.query<RowDataPacket[]>(query2, queryParams);
@@ -59,8 +59,8 @@ export const GET = async (request: NextRequest) => {
     FROM drd 
     WHERE retribusi > 0 
       AND DATE(tglbayar) BETWEEN ? AND ?
-      ${kasir ? "AND nama_user = ?" : ""}
-      ${loketbayar ? "AND nama_loket = ?" : ""}
+      ${kasir && kasir !== "undefined" ? "AND nama_user = ?" : ""}
+      ${loketbayar && loketbayar !== "undefined" ? "AND nama_loket = ?" : ""}
     GROUP BY nama_loket
   `;
 

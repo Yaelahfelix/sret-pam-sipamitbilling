@@ -84,8 +84,8 @@ export default function Page() {
     istampilkan: false,
   });
   const router = useRouter();
-  const [selectedKasir, setSelectedKasir] = useState("");
-  const [selectedLoket, setSelectedLoket] = useState("");
+  const [selectedKasir, setSelectedKasir] = useState("undefined");
+  const [selectedLoket, setSelectedLoket] = useState("undefined");
 
   const {
     data: dataKasir,
@@ -155,12 +155,18 @@ export default function Page() {
               <PopoverContent className="w-80 flex flex-col gap-4">
                 <div>
                   <Label>Kasir</Label>
-                  <Select onValueChange={setSelectedKasir}>
+                  <Select
+                    onValueChange={setSelectedKasir}
+                    value={selectedKasir}
+                  >
                     <SelectTrigger className="w-full">
                       <SelectValue placeholder="Pilih kasir" />
                     </SelectTrigger>
 
                     <SelectContent>
+                      <SelectItem value="undefined" key="undefined">
+                        Pilih Kasir
+                      </SelectItem>
                       {dataKasir?.data.map((kasir) => (
                         <SelectItem value={kasir.nama} key={kasir.nama}>
                           {kasir.nama}
@@ -172,12 +178,18 @@ export default function Page() {
 
                 <div>
                   <Label>Loket Bayar</Label>
-                  <Select onValueChange={setSelectedLoket}>
+                  <Select
+                    onValueChange={setSelectedLoket}
+                    value={selectedLoket}
+                  >
                     <SelectTrigger className="w-full">
                       <SelectValue placeholder="Pilih loket" />
                     </SelectTrigger>
 
                     <SelectContent>
+                      <SelectItem value="undefined" key="undefined">
+                        Pilih Loket
+                      </SelectItem>
                       {dataLoket?.data.map((loket) => (
                         <SelectItem
                           value={loket.kodeloket}

@@ -437,7 +437,7 @@ const ReportPrintComponent = React.forwardRef<HTMLDivElement, DRDTableProps>(
                                   width: "35%",
                                 }}
                               >
-                                Kasir
+                                Loket
                               </th>
                               <th
                                 style={{
